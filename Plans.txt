@@ -1,0 +1,24 @@
+Rogue laike: the genetic program for solving random mazes
+Maze: begin and end point. Preferably no cycli. Hallways of 1 wide.
+Score: 
+Ways to earn: slay monsters, find exit
+Ways to lose: don't find exit per turn, die to monster.
+
+Possible actions:
+Move N,E,S,W,
+Attack N,E,S,W
+(rotate N,E,S,W)
+do nothing
+
+Possible booleans:
+Restrict to 3 distance max/straight lines
+(rotation N,E,S,W)
+Monster over 1-3... wall over 0-3
+End over 1-3...
+
+Coding language:
+Actions: strings?
+
+Richard: genetic algorithm
+Jake&Rik: Maze
+
