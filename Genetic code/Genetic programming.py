@@ -132,8 +132,6 @@ def createIndividuals(numberOf):
     return individuals
 
 def evolve(population, maxGenerations):
-    bestScore = 0
-    bestIndividu = None
     for generation in range(maxGenerations):
         print generation
         fitnesses = []
@@ -198,6 +196,22 @@ def evolve(population, maxGenerations):
                 daughter=daughter.mutate()
                 population.append(son)
                 population.append(daughter)
+    fitnesses = []
+    game = None #TODO: code for randomly generating a game
+    for indi in population:
+        usedGame = game.deepcopy()
+        while not usedGame.finished():
+            action=indi.perform(game)
+            usedGame.doAction(action)
+        fitnesses.append(usedGame.getScore)
+    bestScore =0
+    bestIndividu = None
+    for fitnessInd in range(len(fitnesses)-1):
+        if fitnesses[fitnessInd]>bestScore:
+            bestScore=fitnesses[fitnessInd]
+            bestIndividu=population[fitnessInd]
+    return bestScore, bestIndividu
+    
 
 def generateRandomBranch():
     totalPos=len(actions)+len(considerations)
