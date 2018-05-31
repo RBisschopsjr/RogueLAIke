@@ -5,9 +5,9 @@ global considerations
 global mutationRate
 actions = ["moveN", "moveE", "moveS", "moveW",
            "attackN", "attackE", "attackS", "attackN",
-           "stop"]
-considerations = ["no","yes"]
-mutationRate=0.05
+           "stop"] #All actions possible in the game.
+considerations = ["no","yes"] #The if else statements. TODO: finish all possible ones.
+mutationRate=0.05 #Chance that a given branch or leaf mutates.
 
 class Branch:
     def __init__(self, consider, left, right):
@@ -15,47 +15,58 @@ class Branch:
         self.left=left
         self.right=right
 
+    #Return a copy of this tree.
     def clone(self):
         return self.deepcopy()
 
+    #TODO: finish all possible considerations. Perhaps more useful stucture in form of list?
+    #Perform on a game. Check what our consideration is, and how this consideration actually is in the game.
     def perform(self,model):
         if self.consider==considerations[0]:
             if model:
                 return self.left.perform(model)
             else:
                 return self.right.perform(model)
-        elif self.consider==considerations[0]:
+        elif self.consider==considerations[1]:
             if model:
                 return self.right.perform(model)
             else:
                 return self.left.perform(model)
 
+    #Print the tree: show the actions of left and right, and the consideration in this branch.
     def printTree(self):
         self.left.printTree()
         print self.consider
         self.right.printTree()
 
+    #Returns the size of the tree: size of left+ size of right+itself.
     def getSizeTree(self):
         return left.getSizeTree()+1+right.getSizeTree()
 
+    # Get a random branch in the tree. This function should only be called from the top: it returns the selected location in the tree as well.
     def getRandomBranch(self):
-        size=self.getSizeTree()
-        branchSelected=random.randint(2,size)
-        result, _ = self.getBranch(branchSelected)
+        size=self.getSizeTree() # Figure out how big the tree is in order to pick a random branch.
+        branchSelected=random.randint(2,size) #Select branch.
+        result, _ = self.getBranch(branchSelected) #Get branch.
         return result, branchSelected
 
+    # Get a branch on a selected location. Go down the tree. If selected is zero, we need to return this branch.
     def getBranch(self,selected):
         selected-=1
         if selected==0:
             return self.clone(), selected
         else:
             leftResult, selected = self.left.getBranch(selected)
-            if selected==0:
+            if selected==0: #The selected branch was in the left branch. Return the branch left told us was the correct one.
                 return leftResult, selected
             else:
-                rightResult, selected = self.right.getBranch(selected)
+                rightResult, selected = self.right.getBranch(selected) #The selected branch may or may not be in the right branch. If not, then it will be ignored higher up the recursion.
                 return rightResult, selected
 
+    #Replace a branch in the tree with given tree. If index is 1, the branch that has to be replaced is the next branch.
+    # We do that here rather than at the branch itself, given that this branch needs to know what its new left and right branch
+    # are.
+    # If not this branch, return current index for further checks. Also return self in case of trees with a single node (leaf)
     def replaceBranch(self,replacer,index):
         index-=1
         if index==1:
@@ -69,7 +80,8 @@ class Branch:
             else:
                 return self, index
                     
-
+    # Check to see if we mutate this tree. If so, return the new branch. Else, replace left and right with potential mutations.
+    # We will not mutate the branches if this branch is mutated.
     def mutate(self):
         if random.uniform(0,1)<mutationRate:
             return generateRandomBranch()
@@ -80,18 +92,23 @@ class Branch:
 
 
 class Leaf:
+    #Leaf is defined with just one action.
     def __init__(self,action):
         self.action=action
 
+    # Return a copy of the leaf.
     def clone(self):
         return self.deepcopy()
 
+    # Perform the action specified in the leaf.
     def perform(self,model):
         return self.action
 
+    #Print the action contained in the leaf.
     def printTree(self):
         print self.action
 
+    #Get the size of the tree. For a leaf, this is one (one node)
     def getSizeTree(self):
         return 1
     
@@ -135,90 +152,171 @@ def createIndividuals(numberOf):
         individuals.append(newIndividual)
     return individuals
 
+# Get the fitnesses of each individual in the population by playing the game and getting the score.
+def getFitnesses(population):
+    fitnesses = []
+    game = None #TODO: code for randomly generating a game
+    for indi in population: # For each individual, keep playing the game until it is finished and returns a score.
+        usedGame = game.deepcopy()
+        while not usedGame.finished():
+            action=indi.perform(game)
+            usedGame.doAction(action)
+        fitnesses.append(usedGame.getScore)
+    return fitnesses
+
+# Let the individuals compete with each other and keep the winners for the evolution. Return an empty set population and fitnesess to check if algorithm worked as it should.
+#Also return the survivors of the competition. Amount of survivors should 1/2 the population if even population, or 1/2 + 1 the population if uneven.
+def getSurvivors(population, fitnesses):
+    survivors = []
+    while not len(fitnesses)==0:
+        if len(fitnesses)==1: # If only one individu left, it wins the competition automatically.
+            survivors.append(population.pop(0)) #This should also remove it from population
+            fitnesses.pop(0)
+        else:
+            candidateOne=random.randint(0,len(fitnesses)-1)
+            candidateTwo=random.randint(0,len(fitnesses)-1)
+            while candidateTwo==candidateOne: # Keep on trying until the two candidates are different.
+                candidateTwo=random.randint(0,len(fitnesses)-1)
+            if fitnesses[candidateOne]==fitnesses[candidateTwo]: #Both individuals are equal, pick one at random.
+                if random.randint(0,1)==0:
+                    survivors.append(population[candidateOne])
+                else:
+                    survivors.append(population[candidateTwo])
+            elif fitnesses[candidateOne]>fitnesses[candidateTwo]: #Left is better than right.
+                survivors.append(population[candidateOne])
+            else: #Right is better than left.
+                survivors.append(population[candidateTwo])
+            if candidateOne>candidateTwo: #Remove largest index first to prevent shifting values from removing the wrong index.
+                fitnesses.pop(candidateOne)
+                fitnesses.pop(candidateTwo)
+                population.pop(candidateOne)
+                population.pop(candidateTwo)
+            else:
+                fitnesses.pop(candidateTwo)
+                fitnesses.pop(candidateOne)
+                population.pop(candidateTwo)
+                population.pop(candidateOne)
+    return survivors, population, fitnesses
+
+# Creating the next generation population. Take the survivors and put them in the new population.
+# Further create children from two parents, and mutate them with random chance. Return an empty list of survivors to check
+#all survivors were used, and a set of population that is twice the size of survivors.
+def getNextGen(survivors, population):
+    while not len(survivors)==0:
+        if len(survivors)==1: # If uneven amount of survivors, put it in the population and create a child from itself with mutations.
+            population.add(survivors[0])
+            child = survivors.pop(0).clone()
+            child=child.mutate()
+            population.add(child)
+        else:
+            momIndex = random.randint(0,len(survivors)-1)
+            dadIndex = random.randint(0,len(survivors)-1)
+            while dadIndex==momIndex: # Keep trying until dad individual is someone else than the mother.
+                dadIndex=random.randint(0,len(survivors)-1)
+            mom=survivors[momIndex]
+            dad=survivors[dadIndex]
+            population.append(mom)
+            population.append(dad)
+            #The gens are the branches, the parentSwap is the location where the gen has to go.
+            momGen, momSwap=mom.getRandomBranch() 
+            dadGen, dadSwap=dad.getRandomBranch()
+            daughter=mom.clone() #Daugher is a copy of mom with one branch from the father.
+            son=dad.clone() # Son is a copy of the dad with one branch from the mother.
+            daughter.replaceBranch(dadGen,momSwap)
+            son.replaceBranch(momGen,dadSwap)
+            son=son.mutate() #Mutate the two children.
+            daughter=daughter.mutate()
+            population.append(son)
+            population.append(daughter)
+    return survivors, population
+
 # Genetic programming algorithm. Take a population of individuals, test their fitness, select survivors and create new population out of survivors.
 # Note: if entering population of an uneven individuals, then during the first generation, you will have population+1 individuals. This remains the same for the remainder
 # of the code, regardless of the amount of max generations.
 def evolve(population, maxGenerations):
     for generation in range(maxGenerations):
         print generation
+        fitnesses = getFitnesses(population)
 
         # Check how good each invididual is in the game.
-        fitnesses = []
-        game = None #TODO: code for randomly generating a game
-        for indi in population:
-            usedGame = game.deepcopy()
-            while not usedGame.finished():
-                action=indi.perform(game)
-                usedGame.doAction(action)
-            fitnesses.append(usedGame.getScore)
+##        fitnesses = []
+##        game = None #TODO: code for randomly generating a game
+##        for indi in population: # For each individual, keep playing the game until it is finished and returns a score.
+##            usedGame = game.deepcopy()
+##            while not usedGame.finished():
+##                action=indi.perform(game)
+##                usedGame.doAction(action)
+##            fitnesses.append(usedGame.getScore)
 
         # Let the individuals compete with each other and keep the winners for the evolution.
-        survivors = []
-        while not len(fitnesses)==0:
-            if len(fitnesses)==1: # If only one individu left, it wins the competition automatically.
-                survivors.append(population.pop(0)) #This should also remove it from population
-                fitnesses.pop(0)
-            else:
-                candidateOne=random.randint(0,len(fitnesses)-1)
-                candidateTwo=random.randint(0,len(fitnesses)-1)
-                while candidateTwo==candidateOne: # Keep on trying until the two candidates are different.
-                    candidateTwo=random.randint(0,len(fitnesses)-1)
-                if fitnesses[candidateOne]==fitnesses[candidateTwo]: #Both individuals are equal, pick one at random.
-                    if random.randint(0,1)==0:
-                        survivors.append(population[candidateOne])
-                    else:
-                        survivors.append(population[candidateTwo])
-                elif fitnesses[candidateOne]>fitnesses[candidateTwo]: #Left is better than right.
-                    survivors.append(population[candidateOne])
-                else: #Right is better than left.
-                    survivors.append(population[candidateTwo])
-                if candidateOne>candidateTwo: #Remove largest index first to prevent shifting values from removing the wrong index.
-                    fitnesses.pop(candidateOne)
-                    fitnesses.pop(candidateTwo)
-                    population.pop(candidateOne)
-                    population.pop(candidateTwo)
-                else:
-                    fitnesses.pop(candidateTwo)
-                    fitnesses.pop(candidateOne)
-                    population.pop(candidateTwo)
-                    population.pop(candidateOne)
-        
+        survivors, population, fitnesses = getSurvivors(population, fitnesses)
+##        survivors = []
+##        while not len(fitnesses)==0:
+##            if len(fitnesses)==1: # If only one individu left, it wins the competition automatically.
+##                survivors.append(population.pop(0)) #This should also remove it from population
+##                fitnesses.pop(0)
+##            else:
+##                candidateOne=random.randint(0,len(fitnesses)-1)
+##                candidateTwo=random.randint(0,len(fitnesses)-1)
+##                while candidateTwo==candidateOne: # Keep on trying until the two candidates are different.
+##                    candidateTwo=random.randint(0,len(fitnesses)-1)
+##                if fitnesses[candidateOne]==fitnesses[candidateTwo]: #Both individuals are equal, pick one at random.
+##                    if random.randint(0,1)==0:
+##                        survivors.append(population[candidateOne])
+##                    else:
+##                        survivors.append(population[candidateTwo])
+##                elif fitnesses[candidateOne]>fitnesses[candidateTwo]: #Left is better than right.
+##                    survivors.append(population[candidateOne])
+##                else: #Right is better than left.
+##                    survivors.append(population[candidateTwo])
+##                if candidateOne>candidateTwo: #Remove largest index first to prevent shifting values from removing the wrong index.
+##                    fitnesses.pop(candidateOne)
+##                    fitnesses.pop(candidateTwo)
+##                    population.pop(candidateOne)
+##                    population.pop(candidateTwo)
+##                else:
+##                    fitnesses.pop(candidateTwo)
+##                    fitnesses.pop(candidateOne)
+##                    population.pop(candidateTwo)
+##                    population.pop(candidateOne)
+        survivors, population = getNextGen(survivors,population)
         # Creating the next generation population. Take the survivors and put them in the new population.
         # Further create children from two parents, and mutate them with random chance.
-        while not len(survivors)==0:
-            if len(survivors)==1: # If uneven amount of survivors, put it in the population and create a child from itself with mutations.
-                population.add(survivors[0])
-                child = survivors.pop(0).clone()
-                child=child.mutate()
-                population.add(child)
-            else:
-                momIndex = random.randint(0,len(survivors)-1)
-                dadIndex = random.randint(0,len(survivors)-1)
-                while dadIndex==momIndex: # Keep trying until dad individual is someone else than the mother.
-                    dadIndex=random.randint(0,len(survivors)-1)
-                mom=survivors[momIndex]
-                dad=survivors[dadIndex]
-                population.append(mom)
-                population.append(dad)
-                momGen, momSwap=mom.getRandomBranch()
-                dadGen, dadSwap=dad.getRandomBranch()
-                daughter=mom.clone()
-                son=dad.clone()
-                daughter.replaceBranch(dadGen,momSwap)
-                son.replaceBranch(momGen,dadSwap)
-                son=son.mutate()
-                daughter=daughter.mutate()
-                population.append(son)
-                population.append(daughter)
+##        while not len(survivors)==0:
+##            if len(survivors)==1: # If uneven amount of survivors, put it in the population and create a child from itself with mutations.
+##                population.add(survivors[0])
+##                child = survivors.pop(0).clone()
+##                child=child.mutate()
+##                population.add(child)
+##            else:
+##                momIndex = random.randint(0,len(survivors)-1)
+##                dadIndex = random.randint(0,len(survivors)-1)
+##                while dadIndex==momIndex: # Keep trying until dad individual is someone else than the mother.
+##                    dadIndex=random.randint(0,len(survivors)-1)
+##                mom=survivors[momIndex]
+##                dad=survivors[dadIndex]
+##                population.append(mom)
+##                population.append(dad)
+##                momGen, momSwap=mom.getRandomBranch()
+##                dadGen, dadSwap=dad.getRandomBranch()
+##                daughter=mom.clone()
+##                son=dad.clone()
+##                daughter.replaceBranch(dadGen,momSwap)
+##                son.replaceBranch(momGen,dadSwap)
+##                son=son.mutate()
+##                daughter=daughter.mutate()
+##                population.append(son)
+##                population.append(daughter)
+                
     #Check which individual performs the best.
-    fitnesses = []
-    game = None #TODO: code for randomly generating a game
-    for indi in population:
-        usedGame = game.deepcopy()
-        while not usedGame.finished():
-            action=indi.perform(game)
-            usedGame.doAction(action)
-        fitnesses.append(usedGame.getScore)
+    fitnesses = getFitnesses(population)
+##    game = None #TODO: code for randomly generating a game
+##    for indi in population:
+##        usedGame = game.deepcopy()
+##        while not usedGame.finished():
+##            action=indi.perform(game)
+##            usedGame.doAction(action)
+##        fitnesses.append(usedGame.getScore)
     bestScore =0
     bestIndividu = None
     for fitnessInd in range(len(fitnesses)-1):
