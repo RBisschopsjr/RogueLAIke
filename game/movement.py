@@ -7,16 +7,10 @@ Created on Thu May 24 14:28:13 2018
 import numpy as np
 import pygame
 import random
+import time
+import sys
+from makeMaze import *
 
-
-def ascii_2_matrix(file):
-    fp = open(file)
-    lines = fp.readlines()
-    matrix = []
-    for i in range(0,len(lines)):
-        chars = [word.strip() for word in lines[i].split(',') if word.strip()]
-        matrix.append(chars)
-    return matrix
 
 def getPlayerLocation(matrix):
     #get begin point
@@ -40,8 +34,9 @@ def nextMove(matrix, value):
     elif value >= 0.75:
         return x,y-1
 
-def showMatrix(matrix):
-    print(matrix)
+def showMatrix(matrix):  
+    time.sleep(0.5)
+    print(matrix, end='\r')
     
     
 def movement(matrix):
@@ -52,18 +47,21 @@ def movement(matrix):
         x,y = getPlayerLocation(matrix)
         x_new, y_new = nextMove(matrix,rand)
         
-        if matrix[x_new][y_new] == 'E':
-            print('Done!')
-            done = True
-        elif matrix[x_new][y_new] == 'O':
-            matrix[x][y] = 'O'
-            matrix[x_new][y_new] = 'S'
+        try:
+            if matrix[x_new][y_new] == 'E':
+                print('Done!')
+                done = True
+            elif matrix[x_new][y_new] == 'O':
+                matrix[x][y] = 'O'
+                matrix[x_new][y_new] = 'S'
+                showMatrix(matrix)
+        except:
             showMatrix(matrix)
-        else:
-            showMatrix(matrix)
-            break
     
     
 if __name__ == "__main__":
-    matrix = ascii_2_matrix('testMaze01.txt')
-    movement(matrix)
+    maze = initGrid(46,18)
+    mazeWithStart = generateStart(maze)
+    path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
+    mazeWithPath = drawPath(mazeWithStart[0], path)
+    movement(mazeWithPath)
