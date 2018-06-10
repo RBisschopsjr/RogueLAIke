@@ -64,4 +64,5 @@ if __name__ == "__main__":
     mazeWithStart = generateStart(maze)
     path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
     mazeWithPath = drawPath(mazeWithStart[0], path)
-    movement(mazeWithPath)
+    mazeWithPath = generateMonsters(mazeWithPath,3)
+    printGrid(mazeWithPath)

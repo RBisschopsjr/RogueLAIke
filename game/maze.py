@@ -11,11 +11,11 @@ class maze:
         mazeWithStart = generateStart(maze)
         path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
         self.map = drawPath(mazeWithStart[0], path)
-        self.monsters = [] #TODO: generate monsters and place them in maze. Symbol 'M'?
+        self.monsters = generateMonsters(self.map, 3)
         self.monsterCoordinates = [] #TODO: map monsters to their location. Best done at same time, so that monster at index 1 has the coordinates at index 1
 
     def play(self, player):
-        print "TODO"
+        print("TODO")
     
 
     def getDirections(self, monster):
@@ -34,6 +34,7 @@ class maze:
         return coordinates
 
     def removeMonster(self, coordinates): #TODO: when monster is defeated, remove it and its index.
+        print('hoi')
 
     def getMonsterLocation(monster):
         index = self.monsters.index(monster)
