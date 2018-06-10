@@ -6,9 +6,61 @@ global mutationRate
 actions = ["moveN", "moveE", "moveS", "moveW",
            "attackN", "attackE", "attackS", "attackN",
            "stop"] #All actions possible in the game.
-considerations = ["no","yes"] #The if else statements. TODO: finish all possible ones.
+considerations = []
 mutationRate=0.05 #Chance that a given branch or leaf mutates.
 
+#Class that considers if there is an monster in n steps. Part of strategy pattern for consideration
+class monsterConsideration:
+    def __init__(self,direction, steps):
+        self.direction=direction
+        self.steps=steps
+
+    #Check the game if there is a monster with a certain amount of steps.
+    def decide(model):
+        model.checkMonster(direction,steps)
+
+    #Print out what the consideration exactly is.
+    def printItself():
+        print "Monster "
+        print self.steps
+        print " "
+        print self.direction
+
+#Class that considers if there is an wall in n steps. Part of strategy pattern for consideration
+class wallConsideration:
+    def __init__(self,direction, steps):
+        self.direction=direction
+        self.steps=steps
+
+    #Check the game if there is a wall with a certain amount of steps.
+    def decide(model):
+        model.checkWall(direction,steps)
+
+    #Print out what the consideration exactly is.
+    def printItself():
+        print "wall "
+        print self.steps
+        print " "
+        print self.direction
+
+#Class that considers if there is an exit in n steps. Part of strategy pattern for consideration
+class exitConsideration:
+    def __init__(self,direction, steps):
+        self.direction=direction
+        self.steps=steps
+
+    #Check the game if there is an exit with a certain amount of steps.
+    def decide(model):
+        model.checkExit(direction,steps)
+
+    #Print out what the consideration exactly is.
+    def printItself():
+        print "exit "
+        print self.steps
+        print " "
+        print self.direction
+
+#The Genetic Program structure. It contains a left branch and right branch, both which can be a branch or a leaf. For the game, the first branch is the player.
 class Branch:
     def __init__(self, consider, left, right):
         self.consider=consider
@@ -19,24 +71,17 @@ class Branch:
     def clone(self):
         return self.deepcopy()
 
-    #TODO: finish all possible considerations. Perhaps more useful stucture in form of list?
-    #Perform on a game. Check what our consideration is, and how this consideration actually is in the game.
+    #Do an action given the decision of our consideration.
     def perform(self,model):
-        if self.consider==considerations[0]:
-            if model:
-                return self.left.perform(model)
-            else:
-                return self.right.perform(model)
-        elif self.consider==considerations[1]:
-            if model:
-                return self.right.perform(model)
-            else:
-                return self.left.perform(model)
+        if self.consider.decide(model):
+            self.left.perform(model)
+        else:
+            self.right.perform(model)
 
     #Print the tree: show the actions of left and right, and the consideration in this branch.
     def printTree(self):
         self.left.printTree()
-        print self.consider
+        self.consider.printItself()
         self.right.printTree()
 
     #Returns the size of the tree: size of left+ size of right+itself.
@@ -90,7 +135,7 @@ class Branch:
             self.right=self.right.mutate()
             return self
 
-
+# Part of the tree: this class has only one action and is the end of the recursive functions.
 class Leaf:
     #Leaf is defined with just one action.
     def __init__(self,action):
@@ -158,9 +203,7 @@ def getFitnesses(population):
     game = None #TODO: code for randomly generating a game
     for indi in population: # For each individual, keep playing the game until it is finished and returns a score.
         usedGame = game.deepcopy()
-        while not usedGame.finished():
-            action=indi.perform(game)
-            usedGame.doAction(action)
+        usedGame.play(indi)
         fitnesses.append(usedGame.getScore)
     return fitnesses
 
@@ -341,10 +384,20 @@ def generateRandomBranch():
         ranRight = random.randint(0,len(actions)-1)
         rightLeaf= Leaf(actions[ranRight])
         return Branch(chosenCons,leftLeaf,rightLeaf)
-        
+
+#Craft all potential considerations. Any considerations can consider up to allowedMaxStep
+def generateConsiderations(allowedMaxStep):
+    directions = ["North", "East", "South", "West"]
+    for direction in directions:
+        for steps in range(1,allowedMaxStep+1):
+            considerations.append(monsterConsideration(direction, steps))
+            considerations.append(wallConsideration(direction, steps))
+            considerations.append(exitConsideration(direction, steps))
 
 if __name__ == "__main__":
-    individuals=10;   
-    population=createIndividuals(individuals)
-    score, bestIndividu = evolve(population, 1000)
-    
+    individuals=10;
+    generateConsiderations(3)
+    print(len(considerations))
+##    population=createIndividuals(individuals)
+##    score, bestIndividu = evolve(population, 1000)
+##    
