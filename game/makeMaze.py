@@ -94,7 +94,7 @@ def drawPath(grid, path):
     for el in path[0][1:]:
         grid[el[0],el[1]] = 'O'
     grid[path[1][0], path[1][1]] = 'E'
-    return grid
+    return grid, path[1][0], path[1][1]
 
 def generateMonsters(grid, amount):
     x,y = len(grid),len(grid[0])

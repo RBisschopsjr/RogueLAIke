@@ -11,15 +11,16 @@ class maze:
         self.score=0
         mazeWithStart = generateStart(maze)
         path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
-        emptyMap = drawPath(mazeWithStart[0], path)
+        emptyMap, x, y = drawPath(mazeWithStart[0], path)
         self.map = generateMonsters(emptyMap, 3)
         self.monsters, self.monsterCoordinates = self.assignMonsters(self.map)
+        self.exitCoordinates = [x,y]
 
     def runGame(self, player):
         for iteration in range(500):
             action = player.perform(self)
             #Use action to perform movement/attack
-            if checkFinished():
+            if self.checkFinished():
                 self.score+=100
                 return
             for monster in self.monsters:
@@ -27,8 +28,19 @@ class maze:
                 #update map given action
                 self.updateMap(monster, action)
                 
-            if checkFinished:
+            if self.checkFinished:
                 return
+            
+    #Assumes the player replaces the Exit node, thus leaving an "S" in the place of the "E"
+    #If then the player is gone we can assume a monster killed it and the game is finished
+    def checkFinished(self):
+        x,y = self.getPlayerLocation()
+        if x == self.exitCoordinates[0] and y == self.exitCoordinates[1]:
+            return True, "Won"
+        elif x is None or y is None:
+            return True, "Loss"
+        else:
+            return False
 
     def updateMap(self, monster, action):
         x,y = self.getMonsterLocation(monster)[0], self.getMonsterLocation(monster)[1]
@@ -74,14 +86,16 @@ class maze:
             coordinates.append("moveW")
         return coordinates
 
-    def removeMonster(self, coordinates): #TODO: when monster is defeated, remove it and its index.
-        print('hoi')
+    def removeMonster(self, monster, coordinates):
+        self.monsters.remove(monster)
+        self.monsterCoordinates.remove(coordinates)
+        self.map[coordinates[0], coordinates[1]] = 'O'
 
-    def getMonsterLocation(monster):
+    def getMonsterLocation(self, monster):
         index = self.monsters.index(monster)
         return self.monsterCoordinates[index]
     
-    def setMonsterLocation(monster, x, y):
+    def setMonsterLocation(self, monster, x, y):
         index = self.monsters.index(monster)
         self.monsterCoordinates[index][0] = x
         self.monsterCoordinates[index][0] = y
