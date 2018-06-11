@@ -15,7 +15,7 @@ class maze:
         self.map = generateMonsters(emptyMap, 3)
         self.monsters, self.monsterCoordinates = self.assignMonsters(self.map)
 
-    def runGame(self, , player):
+    def runGame(self, player):
         for iteration in range(500):
             action = player.perform(self)
             #Use action to perform movement/attack
@@ -31,7 +31,7 @@ class maze:
                 return
 
     def updateMap(self, monster, action):
-        x,y = getMonsterLocation(monster)[0], getMonsterLocation(monster)[1]
+        x,y = self.getMonsterLocation(monster)[0], self.getMonsterLocation(monster)[1]
         if action == "moveN":
             self.setMonsterLocation(monster, x+1,y)
             self.map[x][y] = 'O'
@@ -49,12 +49,12 @@ class maze:
             self.map[x][y] = 'O'
             self.map[x][y-1] = 'M'
         
-    def assignMonsters(self, map):
+    def assignMonsters(self):
         monsters=[]
         monsterCoordinates=[]
         for row in range(len(self.map)):
             for column in range(len(self.map[0])):
-                if matrix[row][column] == 'M':
+                if self.map[row][column] == 'M':
                     monsterCoordinates.append([row,column])
                     monsters.append(Monster)
         return monsters, monsterCoordinates
