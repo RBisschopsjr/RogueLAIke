@@ -4,19 +4,39 @@ import random
 import time
 import sys
 from makeMaze import *
+import Monster
 
 class maze:
     def __init__(self):
         self.score=0
         mazeWithStart = generateStart(maze)
         path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
-        self.map = drawPath(mazeWithStart[0], path)
-        self.monsters = generateMonsters(self.map, 3)
-        self.monsterCoordinates = [] #TODO: map monsters to their location. Best done at same time, so that monster at index 1 has the coordinates at index 1
+        emptyMap = drawPath(mazeWithStart[0], path)
+        self.map = generateMonsters(emptyMap, 3)
+        self.monsters, self.monsterCoordinates = assignMonsters(self.map)
 
-    def play(self, player):
-        print("TODO")
-    
+    def runGame(self, player):
+        for iteration in range(500):
+            action = player.perform(self)
+            #Use action to perform movement/attack
+            if checkFinished():
+                self.score+=100
+                return
+            for monster in self.monsters:
+                action = monster.play(self)
+                #update map given action
+            if checkFinished:
+                return
+
+    def assignMonsters(self, map):
+        monsters=[]
+        monsterCoordinates=[]
+        for row in range(len(self.map)):
+            for column in range(len(self.map[0])):
+                if matrix[row][column] == 'M':
+                    monsterCoordinates.append([row,column])
+                    monsters.append(Monster)
+        return monsters, monsterCoordinates
 
     def getDirections(self, monster):
         #directions = []
