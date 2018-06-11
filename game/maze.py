@@ -19,8 +19,8 @@ class maze:
     
 
     def getDirections(self, monster):
-        directions = []
-        coordinates = getMonsterLocation(monster)
+        #directions = []
+        coordinates = self.getMonsterLocation(monster)
         x = coordinates[0]
         y = coordinates[1]
         if not self.map[x,y+1]=="*":
@@ -40,7 +40,7 @@ class maze:
         index = self.monsters.index(monster)
         return self.monsterCoordinates[index]
 
-    def getPlayerLocation(self):
+    def getPlayerLocation(self, matrix):
         for row in range(len(self.map)):
             for column in range(len(self.map[0])):
                 if matrix[row][column] == 'S':
@@ -50,7 +50,7 @@ class maze:
         return self.score
 
     def checkSymbol(self, direction, steps, symbol):
-        x,y = getPlayerLocation()
+        x,y = self.getPlayerLocation()
         if direction=="North":
             modx=0
             mody=1
@@ -71,10 +71,10 @@ class maze:
         return False
 
     def checkMonster(self, direction,steps):
-        return checkSymbol(direction, steps, "M")
+        return self.checkSymbol(direction, steps, "M")
 
     def checkExit(self, direction,steps):
-        return checkSymbol(direction, steps, "E")
+        return self.checkSymbol(direction, steps, "E")
 
     def checkWall(self, direction,steps):
-        return checkSymbol(direction, steps, "*")
+        return self.checkSymbol(direction, steps, "*")

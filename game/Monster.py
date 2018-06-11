@@ -12,7 +12,7 @@ class Monster:
             self.memory=directions[0]
             return directions[0]
         else:
-            bannedAction= getReverseAction(self.memory)
+            bannedAction= self.getReverseAction(self.memory)
             decisionInt = random.randint(0,len(directions))
             action = directions[decisionInt]
             while action==bannedAction:
