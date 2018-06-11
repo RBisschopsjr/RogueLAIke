@@ -6,7 +6,7 @@ class Monster:
 
     # Tell the game what action we take during our turn. Do a random action that
     # does not undo the action we made last turn, unless we can only do that action (deadend)
-    def play(game):
+    def play(self, game):
         directions = game.getDirections(self)
         if len(directions)==1:
             self.memory=directions[0]

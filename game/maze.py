@@ -13,9 +13,9 @@ class maze:
         path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
         emptyMap = drawPath(mazeWithStart[0], path)
         self.map = generateMonsters(emptyMap, 3)
-        self.monsters, self.monsterCoordinates = assignMonsters(self.map)
+        self.monsters, self.monsterCoordinates = self.assignMonsters(self.map)
 
-    def runGame(self, player):
+    def runGame(self, , player):
         for iteration in range(500):
             action = player.perform(self)
             #Use action to perform movement/attack
@@ -25,9 +25,30 @@ class maze:
             for monster in self.monsters:
                 action = monster.play(self)
                 #update map given action
+                self.updateMap(monster, action)
+                
             if checkFinished:
                 return
 
+    def updateMap(self, monster, action):
+        x,y = getMonsterLocation(monster)[0], getMonsterLocation(monster)[1]
+        if action == "moveN":
+            self.setMonsterLocation(monster, x+1,y)
+            self.map[x][y] = 'O'
+            self.map[x+1][y] = 'M'
+        elif action == "moveE":
+            self.setMonsterLocation(monster, x,y+1)
+            self.map[x][y] = 'O'
+            self.map[x][y+1] = 'M'
+        elif action == "moveS":
+            self.setMonsterLocation(monster, x-1,y)
+            self.map[x][y] = 'O'
+            self.map[x-1][y] = 'M'
+        elif action == "moveW":
+            self.setMonsterLocation(monster, x,y-1)
+            self.map[x][y] = 'O'
+            self.map[x][y-1] = 'M'
+        
     def assignMonsters(self, map):
         monsters=[]
         monsterCoordinates=[]
@@ -59,6 +80,11 @@ class maze:
     def getMonsterLocation(monster):
         index = self.monsters.index(monster)
         return self.monsterCoordinates[index]
+    
+    def setMonsterLocation(monster, x, y):
+        index = self.monsters.index(monster)
+        self.monsterCoordinates[index][0] = x
+        self.monsterCoordinates[index][0] = y
 
     def getPlayerLocation(self, matrix):
         for row in range(len(self.map)):
