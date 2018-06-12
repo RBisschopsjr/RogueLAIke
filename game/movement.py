@@ -60,9 +60,13 @@ def movement(matrix):
     
     
 if __name__ == "__main__":
-    maze = initGrid(46,18)
+    maze = initGrid(10,8)
+    print(maze)
+    print("==========Initialized Grid==========")
     mazeWithStart = generateStart(maze)
+    print(mazeWithStart[0])
+    print("==========Added Start==========")
     path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
-    mazeWithPath = drawPath(mazeWithStart[0], path)
-    mazeWithPath = generateMonsters(mazeWithPath,3)
-    printGrid(mazeWithPath)
+    mazeWithPath = drawPath(mazeWithStart[0], path, 3)
+    print(mazeWithPath[0])
+    print("==========Added Paths, Exit and Monsters==========")

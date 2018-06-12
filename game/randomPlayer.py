@@ -1,4 +1,6 @@
 import random
+import sys
+import maze
 
 class randomPlayer:
     def __init__(self):
@@ -13,12 +15,12 @@ class randomPlayer:
                 return "attackN"
             else:
                 return "moveN"
-        elif:
+        elif self.directions[choice]=="East":
             if model.checkMonster("East",1):
                 return "attackE"
             else:
                 return "moveE"
-        elif:
+        elif self.directions[choice]=="South":
             if model.checkMonster("South",1):
                 return "attackS"
             else:
@@ -28,3 +30,5 @@ class randomPlayer:
                 return "attackW"
             else:
                 return "moveW"
+
+if __name__ == "__main__":

@@ -90,18 +90,25 @@ def step(gridDims, path):
     else:
         return None
 
-def drawPath(grid, path):
+#Returns: the maze as a matrix, x coordinate for exit, y coordinate for exit and list of monster coordinates in that order
+def drawPath(grid, path, nrOfMonsters):
     for el in path[0][1:]:
         grid[el[0],el[1]] = 'O'
     grid[path[1][0], path[1][1]] = 'E'
-    return grid, path[1][0], path[1][1]
+    del path[0][0]
+    monsters = random.sample(path[0], nrOfMonsters)
+    for mon in monsters:
+        grid[mon[0], mon[1]] = 'M'
+    return grid, path[1][0], path[1][1], monsters
 
+#Not used
 def generateMonsters(grid, amount):
+    print(grid.shape)
     x,y = len(grid),len(grid[0])
     while amount is not 0:
-        rx = random.randint(0,x)
-        ry = random.randint(0,y)
-        if grid[rx][ry] == 'O':
+        rx = random.randint(0,x - 1)
+        ry = random.randint(0,y - 1)
+        if grid[rx][ry] is 'O':
             grid[rx][ry] = 'M'
             amount-=1
     return grid
