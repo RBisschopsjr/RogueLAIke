@@ -101,18 +101,6 @@ def drawPath(grid, path, nrOfMonsters):
         grid[mon[0], mon[1]] = 'M'
     return grid, path[1][0], path[1][1], monsters
 
-#Not used
-def generateMonsters(grid, amount):
-    print(grid.shape)
-    x,y = len(grid),len(grid[0])
-    while amount is not 0:
-        rx = random.randint(0,x - 1)
-        ry = random.randint(0,y - 1)
-        if grid[rx][ry] is 'O':
-            grid[rx][ry] = 'M'
-            amount-=1
-    return grid
-
 def buildMaze(grid, path):
     allPaths = buildPath2(grid, path)
     endPoint = allPaths[-1]

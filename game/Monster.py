@@ -1,9 +1,10 @@
 import random
 
 class Monster:
+    
     def __init__(self):
         self.memory=""
-
+        
     # Tell the game what action we take during our turn. Do a random action that
     # does not undo the action we made last turn, unless we can only do that action (deadend)
     def play(self, game):
@@ -13,7 +14,7 @@ class Monster:
             return directions[0]
         else:
             bannedAction= self.getReverseAction(self.memory)
-            decisionInt = random.randint(0,len(directions))
+            decisionInt = random.randint(0,len(directions)-1)
             action = directions[decisionInt]
             while action==bannedAction:
                 decisionInt = random.randint(0,len(directions))
@@ -22,7 +23,7 @@ class Monster:
             return action
 
     # Get the opposite action from the direction
-    def getReverseAction(direction):
+    def getReverseAction(self,direction):
         if direction == "moveS":
             return "moveN"
         if direction == "moveS":

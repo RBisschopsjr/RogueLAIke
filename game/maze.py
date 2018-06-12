@@ -4,157 +4,173 @@ import random
 import time
 import sys
 from makeMaze import *
-import Monster
-import handlePlayerAction as pa
+from Monster import *
 
 class maze:
     def __init__(self):
         self.score=0
-        mazeWithStart = generateStart(maze)
+        grid = initGrid(10,10)
+        mazeWithStart = generateStart(grid)
         path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
-        emptyMap, x, y = drawPath(mazeWithStart[0], path)
-        self.map = generateMonsters(emptyMap, 3)
-        self.monsters, self.monsterCoordinates = self.assignMonsters(self.map)
-        self.exitCoordinates = [x,y]
+        self.map, y, x, self.monsterCoordinates = drawPath(mazeWithStart[0], path,3)
+        self.monsters = self.assignMonsters(self.monsterCoordinates)
+        print(self.map[0][1])
+        self.exitCoordinates = [y,x]
 
     def runGame(self, player):
         for iteration in range(500):
+            print(self.map)
             action = player.perform(self)
             #Use action to perform movement/attack
-            pa.performPlayerAction(action)
+            self.performPlayerAction(action)
             
             if self.checkFinished():
-                self.score+=100
                 return
             for monster in self.monsters:
                 action = monster.play(self)
                 #update map given action
                 self.updateMap(monster, action)
                 
-            if self.checkFinished:
+            if self.checkFinished():
+                print(self.map)
                 return
+            self.score-=1
+            print("hi")
+        print("500 rounds")
             
     #Assumes the player replaces the Exit node, thus leaving an "S" in the place of the "E"
     #If then the player is gone we can assume a monster killed it and the game is finished
     def checkFinished(self):
-        x,y = self.getPlayerLocation()
-        if x == self.exitCoordinates[0] and y == self.exitCoordinates[1]:
-            return True, "Won"
+        y,x = self.getPlayerLocation()
+        if y == self.exitCoordinates[0] and x == self.exitCoordinates[1]:
+            print("Hello")
+            self.score+=100
+            return True
         elif x is None or y is None:
-            return True, "Loss"
+            self.score-=50
+            return True
         else:
             return False
 
     def updateMap(self, monster, action):
-        x,y = self.getMonsterLocation(monster)[0], self.getMonsterLocation(monster)[1]
+        y,x = self.getMonsterLocation(monster)[0], self.getMonsterLocation(monster)[1]
         if action == "moveN":
-            self.setMonsterLocation(monster, x+1,y)
-            self.map[x][y] = 'O'
-            self.map[x+1][y] = 'M'
+            self.setMonsterLocation(monster, y+1,x)
+            self.map[y][x] = 'O'
+            self.map[y][x+1] = 'M'
         elif action == "moveE":
-            self.setMonsterLocation(monster, x,y+1)
-            self.map[x][y] = 'O'
-            self.map[x][y+1] = 'M'
+            self.setMonsterLocation(monster, y,x+1)
+            self.map[y][x] = 'O'
+            self.map[y][x+1] = 'M'
         elif action == "moveS":
-            self.setMonsterLocation(monster, x-1,y)
-            self.map[x][y] = 'O'
-            self.map[x-1][y] = 'M'
+            self.setMonsterLocation(monster, y-1,x)
+            self.map[y][x] = 'O'
+            self.map[y-1][x] = 'M'
         elif action == "moveW":
-            self.setMonsterLocation(monster, x,y-1)
-            self.map[x][y] = 'O'
-            self.map[x][y-1] = 'M'
+            self.setMonsterLocation(monster, y,x-1)
+            self.map[y][x] = 'O'
+            self.map[y][x-1] = 'M'
         
-    def assignMonsters(self):
+    def assignMonsters(self, monsterCoordinates):
         monsters=[]
-        monsterCoordinates=[]
-        for row in range(len(self.map)):
-            for column in range(len(self.map[0])):
-                if self.map[row][column] == 'M':
-                    monsterCoordinates.append([row,column])
-                    monsters.append(Monster)
-        return monsters, monsterCoordinates
+        for monster in monsterCoordinates:
+            monsters.append(Monster())
+        return monsters
 
     def getDirections(self, monster):
         #directions = []
         coordinates = self.getMonsterLocation(monster)
-        x = coordinates[0]
-        y = coordinates[1]
-        if not self.map[x,y+1]=="*":
-            coordinates.append("moveN")
-        if not self.map[x+1,y]=="*":
-            coordinates.append("moveE")
-        if not self.map[x,y-1]=="*":
-            coordinates.append("moveS")
-        if not self.map[x-1,y+1]=="*":
-            coordinates.append("moveW")
+        y = coordinates[0]
+        x = coordinates[1]
+        try:
+            if not self.map[y+1,x]=="*" or self.map[y+1,x]=="E":
+                coordinates.append("moveN")
+        except:
+            pass
+        try:
+            if not self.map[y,x+1]=="*" or self.map[y,x+1]=="E":
+                coordinates.append("moveE")
+        except:
+            pass
+        try:
+            if not self.map[y-1,x]=="*" or self.map[y-1,x]=="E":
+                coordinates.append("moveS")
+        except:
+            pass
+        try:
+            if not self.map[y,x-1]=="*" or self.map[y,x-1]=="E":
+                coordinates.append("moveW")
+        except:
+            pass
         return coordinates
     
     def performPlayerAction(self,action):
-        x,y = self.getPlayerLocation()
+        y,x = self.getPlayerLocation()
         if action=="attackN":
-            if self.map[x,y+1]=="M":
-                self.removeMonster(x,y+1)
+            if self.map[y,x+1]=="M":
+                self.removeMonster(y+1,x)
         elif action=="attackE":
-            if self.map[x+1,y]=="M":
-                self.removeMonster(x+1,y)
+            if self.map[y+1,x]=="M":
+                self.removeMonster(y,x+1)
         elif action=="attackS":
-            if self.map[x,y-1]=="M":
-                self.removeMonster(x,y-1)
+            if self.map[y,x-1]=="M":
+                self.removeMonster(y-1,x)
         elif action=="attackW":
-            if self.map[x-1,y]=="M":
-                self.removeMonster(x-1,y)
+            if self.map[y-1,x]=="M":
+                self.removeMonster(y,x-1)
                 
         elif action=="moveN":
-            if self.map[x,y+1]=="M":
-                self.map[x,y]="0"
-            elif not self.map[x,y+1]=="*":
-                self.map[x,y+1]="S"
-                self.map[x,y]="0"
+            if self.map[y+1,x]=="M":
+                self.map[y,x]="0"
+            elif not self.map[y+1,x]=="*":
+                self.map[y+1,x]="S"
+                self.map[y,x]="0"
         elif action=="moveE":
-            if self.map[x+1,y]=="M":
-                self.map[x,y]="0"
-            elif not self.map[x+1,y]=="*":
-                self.map[x+1,y]="S"
-                self.map[x,y]="0"
+            if self.map[y,x+1]=="M":
+                self.map[y,x]="0"
+            elif not self.map[y,x+1]=="*":
+                self.map[y+1,x]="S"
+                self.map[y,x]="0"
         elif action=="moveS":
-            if self.map[x,y-1]=="M":
-                self.map[x,y]="0"
-            elif not self.map[x,y-1]=="*":
-                self.map[x,y-1]="S"
-                self.map[x,y]="0"
-        elif action=="moveS":
-            if self.map[x,y-1]=="M":
-                self.map[x,y]="0"
-            elif not self.map[x,y-1]=="*":
-                self.map[x,y+1]="S"
-                self.map[x,y]="0"
+            if self.map[y-1,x]=="M":
+                self.map[y,x]="0"
+            elif not self.map[y-1,x]=="*":
+                self.map[y-1,x]="S"
+                self.map[y,x]="0"
+        elif action=="moveW":
+            if self.map[y,x-1]=="M":
+                self.map[y,x]="0"
+            elif not self.map[y,x-1]=="*":
+                self.map[y,x-1]="S"
+                self.map[y,x]="0"
 
 
     def removeMonster(self, monster, coordinates):
         self.monsters.remove(monster)
         self.monsterCoordinates.remove(coordinates)
         self.map[coordinates[0], coordinates[1]] = 'O'
+        self.score+=10
 
     def getMonsterLocation(self, monster):
         index = self.monsters.index(monster)
         return self.monsterCoordinates[index]
     
-    def setMonsterLocation(self, monster, x, y):
+    def setMonsterLocation(self, monster, y, x):
         index = self.monsters.index(monster)
-        self.monsterCoordinates[index][0] = x
         self.monsterCoordinates[index][0] = y
+        self.monsterCoordinates[index][1] = x
 
-    def getPlayerLocation(self, matrix):
+    def getPlayerLocation(self):
         for row in range(len(self.map)):
             for column in range(len(self.map[0])):
-                if matrix[row][column] == 'S':
+                if self.map[row][column] == 'S':
                     return row, column
 
     def getScore(self):
         return self.score
 
     def checkSymbol(self, direction, steps, symbol):
-        x,y = self.getPlayerLocation()
+        y,x = self.getPlayerLocation()
         if direction=="North":
             modx=0
             mody=1
@@ -170,8 +186,12 @@ class maze:
         for step in range(steps):
             x+=modx
             y+=mody
-            if self.map[x][y]==symbol:
-                return True
+            try:
+                if self.map[y][x]==symbol:
+                    return True
+            except:
+                if symbol=="*":
+                    return True
         return False
 
     def checkMonster(self, direction,steps):
