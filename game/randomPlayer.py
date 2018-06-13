@@ -1,6 +1,7 @@
 import random
 import sys
 import maze
+import copy
 
 class randomPlayer:
     #Type of player that performs an action to a random direction. If a monster
@@ -37,4 +38,3 @@ if __name__ == "__main__":
     randomPlayer = randomPlayer()
     maze = maze.maze()
     maze.runGame(randomPlayer)
-    print(maze.getScore())

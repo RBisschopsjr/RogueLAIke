@@ -1,4 +1,5 @@
 import random
+import copy
 
 global actions
 global considerations
@@ -69,7 +70,7 @@ class Branch:
 
     #Return a copy of this tree.
     def clone(self):
-        return self.deepcopy()
+        return copy.deepcopy(self)
 
     #Do an action given the decision of our consideration.
     def perform(self,model):
@@ -143,7 +144,7 @@ class Leaf:
 
     # Return a copy of the leaf.
     def clone(self):
-        return self.deepcopy()
+        return copy.deepcopy(self)
 
     # Perform the action specified in the leaf.
     def perform(self,model):
@@ -202,7 +203,7 @@ def getFitnesses(population):
     fitnesses = []
     game = None #TODO: code for randomly generating a game
     for indi in population: # For each individual, keep playing the game until it is finished and returns a score.
-        usedGame = game.deepcopy()
+        usedGame = copy.deepcopy(game)
         usedGame.play(indi)
         fitnesses.append(usedGame.getScore)
     return fitnesses

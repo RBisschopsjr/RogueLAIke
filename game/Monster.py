@@ -11,15 +11,19 @@ class Monster:
         directions = game.getDirections(self)
         if len(directions)==1:
             self.memory=directions[0]
+            #print(directions[0])
             return directions[0]
+        elif len(directions)==0:
+            return "stop"
         else:
             bannedAction= self.getReverseAction(self.memory)
             decisionInt = random.randint(0,len(directions)-1)
             action = directions[decisionInt]
             while action==bannedAction:
-                decisionInt = random.randint(0,len(directions))
+                decisionInt = random.randint(0,len(directions)-1)
                 action = directions[decisionInt]
             self.memory= action
+            #print(action)
             return action
 
     # Get the opposite action from the direction
