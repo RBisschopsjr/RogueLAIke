@@ -38,3 +38,5 @@ if __name__ == "__main__":
     randomPlayer = randomPlayer()
     maze = maze.maze()
     maze.runGame(randomPlayer)
+    print(maze.getScore())
+    print(maze.map)
