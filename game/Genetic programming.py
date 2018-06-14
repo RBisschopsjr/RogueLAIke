@@ -1,5 +1,6 @@
 import random
 import copy
+import maze
 
 global actions
 global considerations
@@ -10,56 +11,62 @@ actions = ["moveN", "moveE", "moveS", "moveW",
 considerations = []
 mutationRate=0.05 #Chance that a given branch or leaf mutates.
 
-#Class that considers if there is an monster in n steps. Part of strategy pattern for consideration
+# Class that considers the last action of the player, and if this is the same as the action it should check for.
+# Part of strategy pattern for considerations
+class directionConsideration:
+    def __init__(self,direction):
+        self.direction=direction
+
+    #Determines what our last action was.
+    def decide(self,model):
+        return model.getLastPlayerAction()==self.direction
+
+    #Print out what the consideration exactly is.
+    def printItself(self):
+        print("Player consideration ", self.direction)
+
+#Class that considers if there is an monster in n steps. Part of strategy pattern for considerations
 class monsterConsideration:
     def __init__(self,direction, steps):
         self.direction=direction
         self.steps=steps
 
     #Check the game if there is a monster with a certain amount of steps.
-    def decide(model):
-        model.checkMonster(direction,steps)
+    def decide(self,model):
+        return model.checkMonster(self.direction,self.steps)
 
     #Print out what the consideration exactly is.
-    def printItself():
-        print "Monster "
-        print self.steps
-        print " "
-        print self.direction
+    def printItself(self):
+        print ("Monster ", self.steps, " ", self.direction)
 
-#Class that considers if there is an wall in n steps. Part of strategy pattern for consideration
+#Class that considers if there is an wall in n steps. Part of strategy pattern for considerations
 class wallConsideration:
     def __init__(self,direction, steps):
         self.direction=direction
         self.steps=steps
 
     #Check the game if there is a wall with a certain amount of steps.
-    def decide(model):
-        model.checkWall(direction,steps)
+    def decide(self,model):
+        return model.checkWall(self.direction,self.steps)
 
     #Print out what the consideration exactly is.
-    def printItself():
-        print "wall "
-        print self.steps
-        print " "
-        print self.direction
+    def printItself(self):
+        print ("wall ", self.steps, " ",self.direction)
 
-#Class that considers if there is an exit in n steps. Part of strategy pattern for consideration
+#Class that considers if there is an exit in n steps. Part of strategy pattern for considerations
 class exitConsideration:
     def __init__(self,direction, steps):
         self.direction=direction
         self.steps=steps
 
     #Check the game if there is an exit with a certain amount of steps.
-    def decide(model):
-        model.checkExit(direction,steps)
+    def decide(self,model):
+        return model.checkExit(self.direction,self.steps)
 
     #Print out what the consideration exactly is.
-    def printItself():
-        print "exit "
-        print self.steps
-        print " "
-        print self.direction
+    def printItself(self):
+        print ("exit ", self.steps, " ",self.direction)
+
 
 #The Genetic Program structure. It contains a left branch and right branch, both which can be a branch or a leaf. For the game, the first branch is the player.
 class Branch:
@@ -84,10 +91,11 @@ class Branch:
         self.left.printTree()
         self.consider.printItself()
         self.right.printTree()
+        print(" ")
 
     #Returns the size of the tree: size of left+ size of right+itself.
     def getSizeTree(self):
-        return left.getSizeTree()+1+right.getSizeTree()
+        return self.left.getSizeTree()+1+self.right.getSizeTree()
 
     # Get a random branch in the tree. This function should only be called from the top: it returns the selected location in the tree as well.
     def getRandomBranch(self):
@@ -109,22 +117,15 @@ class Branch:
                 rightResult, selected = self.right.getBranch(selected) #The selected branch may or may not be in the right branch. If not, then it will be ignored higher up the recursion.
                 return rightResult, selected
 
-    #Replace a branch in the tree with given tree. If index is 1, the branch that has to be replaced is the next branch.
-    # We do that here rather than at the branch itself, given that this branch needs to know what its new left and right branch
-    # are.
-    # If not this branch, return current index for further checks. Also return self in case of trees with a single node (leaf)
+    #Replace a branch in the tree with given tree. If index is 0, we have to replace this branch. Else look in left and right branches for potential branches that need to be replaced.
     def replaceBranch(self,replacer,index):
         index-=1
-        if index==1:
-            self.left=replacer
-            return self, index-1
+        if index==0:
+            return replacer, index-1
         else:
-            leftResult,index = self.left.replaceBranch(replacer,index)
-            if index==1:
-                self.right=replacer
-                return self,index
-            else:
-                return self, index
+            self.left,index = self.left.replaceBranch(replacer,index)
+            self.right,index = self.right.replaceBranch(replacer,index)
+            return self, index
                     
     # Check to see if we mutate this tree. If so, return the new branch. Else, replace left and right with potential mutations.
     # We will not mutate the branches if this branch is mutated.
@@ -152,7 +153,7 @@ class Leaf:
 
     #Print the action contained in the leaf.
     def printTree(self):
-        print self.action
+        print (self.action)
 
     #Get the size of the tree. For a leaf, this is one (one node)
     def getSizeTree(self):
@@ -162,13 +163,13 @@ class Leaf:
     def getRandomBranch(self):
         return self.clone(), 0
 
-    #Replace a branch in the tree with given tree. If index is zero here, we are the only the branch and thus we need to be replaced.
+    #Replace a branch in the tree with given tree.
     def replaceBranch(self,replacer,index):
-        index-=index
+        index-=1
         if index==0:
             return replacer, index
         else:
-            self, index
+            return self, index
 
     #Clone a selected branch. If not this leaf, send to branch above it was not this one.
     def getBranch(self,selected):
@@ -183,29 +184,37 @@ class Leaf:
         if random.uniform(0,1)<mutationRate:
             return generateRandomBranch()
         return self
-        
-# Creates a population of numberOf size. Each member is of the form branch(leaf,leaf).
+
+# Generates a random branch of the form (branch(leaf,leaf)).
+def generateBranch():
+    ranLeft = random.randint(0,len(actions)-1)
+    leftLeaf= Leaf(actions[ranLeft])
+    ranRight = random.randint(0,len(actions)-1)
+    rightLeaf= Leaf(actions[ranRight])
+    ranConsider= random.randint(0,len(considerations)-1)
+    newIndividual = Branch(considerations[ranConsider],leftLeaf,rightLeaf)
+    return newIndividual
+
+# Creates a population of numberOf size. Each member is of the form branch(branch(leaf,leaf),branch(leaf,leaf)).
 # Consideration and actions is randomly selected.
 def createIndividuals(numberOf):
     individuals = []
     for count in range(numberOf):
-        ranLeft = random.randint(0,len(actions)-1)
-        leftLeaf= Leaf(actions[ranLeft])
-        ranRight = random.randint(0,len(actions)-1)
-        rightLeaf= Leaf(actions[ranRight])
+        leftBranch = generateBranch()
+        rightBranch = generateBranch()
         ranConsider= random.randint(0,len(considerations)-1)
-        newIndividual = Branch(considerations[ranConsider],leftLeaf,rightLeaf)
+        newIndividual = Branch(considerations[ranConsider],leftBranch,rightBranch)
         individuals.append(newIndividual)
     return individuals
 
 # Get the fitnesses of each individual in the population by playing the game and getting the score.
 def getFitnesses(population):
     fitnesses = []
-    game = None #TODO: code for randomly generating a game
+    game = maze.maze()
     for indi in population: # For each individual, keep playing the game until it is finished and returns a score.
         usedGame = copy.deepcopy(game)
-        usedGame.play(indi)
-        fitnesses.append(usedGame.getScore)
+        usedGame.runGame(indi)
+        fitnesses.append(usedGame.getScore())
     return fitnesses
 
 # Let the individuals compete with each other and keep the winners for the evolution. Return an empty set population and fitnesess to check if algorithm worked as it should.
@@ -248,10 +257,10 @@ def getSurvivors(population, fitnesses):
 def getNextGen(survivors, population):
     while not len(survivors)==0:
         if len(survivors)==1: # If uneven amount of survivors, put it in the population and create a child from itself with mutations.
-            population.add(survivors[0])
+            population.append(survivors[0])
             child = survivors.pop(0).clone()
             child=child.mutate()
-            population.add(child)
+            population.append(child)
         else:
             momIndex = random.randint(0,len(survivors)-1)
             dadIndex = random.randint(0,len(survivors)-1)
@@ -262,16 +271,30 @@ def getNextGen(survivors, population):
             population.append(mom)
             population.append(dad)
             #The gens are the branches, the parentSwap is the location where the gen has to go.
-            momGen, momSwap=mom.getRandomBranch() 
+            momGen, momSwap=mom.getRandomBranch()
             dadGen, dadSwap=dad.getRandomBranch()
             daughter=mom.clone() #Daugher is a copy of mom with one branch from the father.
             son=dad.clone() # Son is a copy of the dad with one branch from the mother.
             daughter.replaceBranch(dadGen,momSwap)
+##            print("mom")
+##            mom.printTree()
+##            print("dadGen")
+##            dadGen.printTree()
+##            print("momSwap")
+##            print(momSwap)
+##            print("daughter")
+##            daughter.printTree()
             son.replaceBranch(momGen,dadSwap)
             son=son.mutate() #Mutate the two children.
             daughter=daughter.mutate()
             population.append(son)
             population.append(daughter)
+            if dadIndex>momIndex:
+                survivors.pop(dadIndex)
+                survivors.pop(momIndex)
+            else:
+                survivors.pop(momIndex)
+                survivors.pop(dadIndex)
     return survivors, population
 
 # Genetic programming algorithm. Take a population of individuals, test their fitness, select survivors and create new population out of survivors.
@@ -279,89 +302,14 @@ def getNextGen(survivors, population):
 # of the code, regardless of the amount of max generations.
 def evolve(population, maxGenerations):
     for generation in range(maxGenerations):
-        print generation
+        print (generation)
         fitnesses = getFitnesses(population)
-
-        # Check how good each invididual is in the game.
-##        fitnesses = []
-##        game = None #TODO: code for randomly generating a game
-##        for indi in population: # For each individual, keep playing the game until it is finished and returns a score.
-##            usedGame = game.deepcopy()
-##            while not usedGame.finished():
-##                action=indi.perform(game)
-##                usedGame.doAction(action)
-##            fitnesses.append(usedGame.getScore)
-
-        # Let the individuals compete with each other and keep the winners for the evolution.
         survivors, population, fitnesses = getSurvivors(population, fitnesses)
-##        survivors = []
-##        while not len(fitnesses)==0:
-##            if len(fitnesses)==1: # If only one individu left, it wins the competition automatically.
-##                survivors.append(population.pop(0)) #This should also remove it from population
-##                fitnesses.pop(0)
-##            else:
-##                candidateOne=random.randint(0,len(fitnesses)-1)
-##                candidateTwo=random.randint(0,len(fitnesses)-1)
-##                while candidateTwo==candidateOne: # Keep on trying until the two candidates are different.
-##                    candidateTwo=random.randint(0,len(fitnesses)-1)
-##                if fitnesses[candidateOne]==fitnesses[candidateTwo]: #Both individuals are equal, pick one at random.
-##                    if random.randint(0,1)==0:
-##                        survivors.append(population[candidateOne])
-##                    else:
-##                        survivors.append(population[candidateTwo])
-##                elif fitnesses[candidateOne]>fitnesses[candidateTwo]: #Left is better than right.
-##                    survivors.append(population[candidateOne])
-##                else: #Right is better than left.
-##                    survivors.append(population[candidateTwo])
-##                if candidateOne>candidateTwo: #Remove largest index first to prevent shifting values from removing the wrong index.
-##                    fitnesses.pop(candidateOne)
-##                    fitnesses.pop(candidateTwo)
-##                    population.pop(candidateOne)
-##                    population.pop(candidateTwo)
-##                else:
-##                    fitnesses.pop(candidateTwo)
-##                    fitnesses.pop(candidateOne)
-##                    population.pop(candidateTwo)
-##                    population.pop(candidateOne)
         survivors, population = getNextGen(survivors,population)
-        # Creating the next generation population. Take the survivors and put them in the new population.
-        # Further create children from two parents, and mutate them with random chance.
-##        while not len(survivors)==0:
-##            if len(survivors)==1: # If uneven amount of survivors, put it in the population and create a child from itself with mutations.
-##                population.add(survivors[0])
-##                child = survivors.pop(0).clone()
-##                child=child.mutate()
-##                population.add(child)
-##            else:
-##                momIndex = random.randint(0,len(survivors)-1)
-##                dadIndex = random.randint(0,len(survivors)-1)
-##                while dadIndex==momIndex: # Keep trying until dad individual is someone else than the mother.
-##                    dadIndex=random.randint(0,len(survivors)-1)
-##                mom=survivors[momIndex]
-##                dad=survivors[dadIndex]
-##                population.append(mom)
-##                population.append(dad)
-##                momGen, momSwap=mom.getRandomBranch()
-##                dadGen, dadSwap=dad.getRandomBranch()
-##                daughter=mom.clone()
-##                son=dad.clone()
-##                daughter.replaceBranch(dadGen,momSwap)
-##                son.replaceBranch(momGen,dadSwap)
-##                son=son.mutate()
-##                daughter=daughter.mutate()
-##                population.append(son)
-##                population.append(daughter)
                 
     #Check which individual performs the best.
     fitnesses = getFitnesses(population)
-##    game = None #TODO: code for randomly generating a game
-##    for indi in population:
-##        usedGame = game.deepcopy()
-##        while not usedGame.finished():
-##            action=indi.perform(game)
-##            usedGame.doAction(action)
-##        fitnesses.append(usedGame.getScore)
-    bestScore =0
+    bestScore =-100
     bestIndividu = None
     for fitnessInd in range(len(fitnesses)-1):
         if fitnesses[fitnessInd]>bestScore:
@@ -390,15 +338,17 @@ def generateRandomBranch():
 def generateConsiderations(allowedMaxStep):
     directions = ["North", "East", "South", "West"]
     for direction in directions:
+        considerations.append(directionConsideration(direction))
         for steps in range(1,allowedMaxStep+1):
             considerations.append(monsterConsideration(direction, steps))
             considerations.append(wallConsideration(direction, steps))
             considerations.append(exitConsideration(direction, steps))
 
 if __name__ == "__main__":
-    individuals=10;
+    individuals=100;
     generateConsiderations(3)
-    print(len(considerations))
-##    population=createIndividuals(individuals)
-##    score, bestIndividu = evolve(population, 1000)
-##    
+    population=createIndividuals(individuals)
+    score, bestIndividu = evolve(population, 100)
+    print(score)
+    bestIndividu.printTree()
+    

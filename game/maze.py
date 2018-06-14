@@ -15,6 +15,7 @@ class maze:
         self.map, y, x, self.monsterCoordinates = drawPath(mazeWithStart[0], path,3)
         self.monsters = self.assignMonsters(self.monsterCoordinates)
         self.exitCoordinates = [y,x]
+        self.lastPlayerAction = ""
 
     def runGame(self, player):
         for _ in range(500):
@@ -31,7 +32,6 @@ class maze:
                 
             if self.checkFinished():
                 return
-            self.score-=0.1
             
     #Assumes the player replaces the Exit node, thus leaving an "S" in the place of the "E"
     #If then the player is gone we can assume a monster killed it and the game is finished
@@ -41,7 +41,7 @@ class maze:
             self.score-=50
             return True
         elif y == self.exitCoordinates[0] and x == self.exitCoordinates[1]:
-            self.score+=100
+            self.score+=1000
             return True
         else:
             return False
@@ -100,47 +100,88 @@ class maze:
             if not y-1<0:
                 if self.map[y-1,x]=="M":
                     self.removeMonster([y-1,x])
+                else:
+                    self.score-=1
+            else:
+                self.score-=1
         elif action=="attackE":
             if not x+1==self.map.shape[1]:
                 if self.map[y,x+1]=="M":
                     self.removeMonster([y,x+1])
+                else:
+                    self.score-=1
+            self.score-=1
         elif action=="attackS":
             if not y+1==self.map.shape[0]:
                 if self.map[y+1,x]=="M":
                     self.removeMonster([y+1,x])
+                else:
+                    self.score-=1
+            else:
+                self.score-=1
         elif action=="attackW":
             if not x-1<0:
                 if self.map[y,x-1]=="M":
                     self.removeMonster([y,x-1])
+                else:
+                    self.score-=1
+            else:
+                self.score-=1
                     
         elif action=="moveN":
+            self.lastPlayerAction="North"
             if not y-1<0:
                 if self.map[y-1,x]=="M":
                     self.map[y,x]="O"
                 elif not self.map[y-1,x]=="*":
                     self.map[y-1,x]="S"
                     self.map[y,x]="O"
+                    self.score+=1
+                else:
+                    self.score-=1
+            else:
+                self.score-=1
         elif action=="moveE":
+            self.lastPlayerAction="East"
             if not x+1==self.map.shape[1]:
                 if self.map[y,x+1]=="M":
                     self.map[y,x]="O"
                 elif not self.map[y,x+1]=="*":
                     self.map[y,x+1]="S"
                     self.map[y,x]="O"
+                    self.score+=1
+                else:
+                    self.score-=1
+            else:
+                self.score-=1
         elif action=="moveS":
+            self.lastPlayerAction="South"
             if not y+1==self.map.shape[0]:
                 if self.map[y+1,x]=="M":
                     self.map[y,x]="O"
                 elif not self.map[y+1,x]=="*":
                     self.map[y+1,x]="S"
                     self.map[y,x]="O"
+                    self.score+=1
+                else:
+                    self.score-=1
+            else:
+                self.score-=1
         elif action=="moveW":
+            self.lastPlayerAction="West"
             if not x-1<0:
                 if self.map[y,x-1]=="M":
                     self.map[y,x]="O"
                 elif not self.map[y,x-1]=="*":
                     self.map[y,x-1]="S"
                     self.map[y,x]="O"
+                    self.score+=1
+                else:
+                    self.score-=1
+            else:
+                self.score-=1
+        elif action=="stop":
+            self.score-=1
 
     def removeMonster(self, coordinates):
         index=self.monsterCoordinates.index(coordinates)
@@ -185,12 +226,13 @@ class maze:
         for step in range(steps):
             x+=modx
             y+=mody
-            try:
-                if self.map[y][x]==symbol:
-                    return True
-            except:
+            if x<0 or x==self.map.shape[1] or y<0 or y==self.map.shape[0]:
                 if symbol=="*":
                     return True
+                else:
+                    return False
+            if self.map[y][x]==symbol:
+                return True
         return False
 
     def checkMonster(self, direction,steps):
@@ -201,3 +243,6 @@ class maze:
 
     def checkWall(self, direction,steps):
         return self.checkSymbol(direction, steps, "*")
+
+    def getLastPlayerAction(self):
+        return self.lastPlayerAction
