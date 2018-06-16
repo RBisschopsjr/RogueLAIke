@@ -1,13 +1,14 @@
 import random
 import copy
-import maze
+import Maze
 
 global actions
 global considerations
 global mutationRate
-actions = ["moveN", "moveE", "moveS", "moveW",
-           "attackN", "attackE", "attackS", "attackN",
-           "stop"] #All actions possible in the game.
+actions = ["moveN", "moveE", "moveS", "moveW","stop"]
+##actions = ["moveN", "moveE", "moveS", "moveW",
+##           "attackN", "attackE", "attackS", "attackN",
+##           "stop"] #All actions possible in the game.
 considerations = []
 mutationRate=0.1 #Chance that a given branch or leaf mutates.
 
@@ -225,12 +226,20 @@ def createIndividuals(numberOf):
 # Get the fitnesses of each individual in the population by playing the game and getting the score.
 def getFitnesses(population):
     fitnesses = []
-    game = maze.maze()
+    mazes=[]
+    for _ in range(5):
+        game = Maze.maze()
+        mazes.append(game)
+    #game = maze.maze()
     for indi in population: # For each individual, keep playing the game until it is finished and returns a score.
-        usedGame = copy.deepcopy(game)
-        usedGame.runGame(indi)
-        fitnesses.append(usedGame.getScore())
+        totalScore= 0
+        for maze in mazes:
+            usedGame = copy.deepcopy(maze)
+            usedGame.runGame(indi)
+            totalScore+=usedGame.getScore()
+        fitnesses.append(float(totalScore)/5.0)
     return fitnesses
+
 
 # Let the individuals compete with each other and keep the winners for the evolution. Return an empty set population and fitnesess to check if algorithm worked as it should.
 #Also return the survivors of the competition. Amount of survivors should 1/2 the population if even population, or 1/2 + 1 the population if uneven.
@@ -319,18 +328,23 @@ def evolve(population, maxGenerations):
     for generation in range(maxGenerations):
         print (generation)
         fitnesses = getFitnesses(population)
+##        for index in range(len(fitnesses)):
+##            if fitnesses[index]==0:
+##                population[index].printTree()
         print(fitnesses)
         survivors, population, fitnesses = getSurvivors(population, fitnesses)
         survivors, population = getNextGen(survivors,population)
                 
     #Check which individual performs the best.
     fitnesses = getFitnesses(population)
-    bestScore =-100
+    bestScore =-10000
     bestIndividu = None
     for fitnessInd in range(len(fitnesses)-1):
         if fitnesses[fitnessInd]>bestScore:
             bestScore=fitnesses[fitnessInd]
             bestIndividu=population[fitnessInd]
+    testGame= Maze.maze()
+    testGame.runAndPrintGame(bestIndividu)
     return bestScore, bestIndividu
     
 # Generate a random branch: branch can be a leaf or a branch.
@@ -356,15 +370,15 @@ def generateConsiderations(allowedMaxStep):
     for direction in directions:
         considerations.append(directionConsideration(direction))
         for steps in range(1,allowedMaxStep+1):
-            considerations.append(monsterConsideration(direction, steps))
+            #considerations.append(monsterConsideration(direction, steps))
             considerations.append(wallConsideration(direction, steps))
-            considerations.append(exitConsideration(direction, steps))
+            #considerations.append(exitConsideration(direction, steps))
 
 if __name__ == "__main__":
-    individuals=10;
-    generateConsiderations(1)
+    individuals=50;
+    generateConsiderations(3)
     population=createIndividuals(individuals)
-    score, bestIndividu = evolve(population, 1000)
+    score, bestIndividu = evolve(population, 100)
     print(score)
     bestIndividu.printTree()
     

@@ -28,11 +28,11 @@ class Monster:
 
     # Get the opposite action from the direction
     def getReverseAction(self,direction):
+        if direction == "moveN":
+            return "moveS"
+        if direction == "moveE":
+            return "moveW"
         if direction == "moveS":
             return "moveN"
-        if direction == "moveS":
-            return "moveN"
-        if direction == "moveS":
-            return "moveN"
-        if direction == "moveS":
-            return "moveN"
+        if direction == "moveW":
+            return "moveE"

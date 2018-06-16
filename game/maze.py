@@ -12,12 +12,34 @@ class maze:
         grid = initGrid(10,10)
         mazeWithStart = generateStart(grid)
         path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
-        self.map, y, x, self.monsterCoordinates = drawPath(mazeWithStart[0], path,3)
+        self.map, y, x, self.monsterCoordinates = drawPath(mazeWithStart[0], path,0)
         self.monsters = self.assignMonsters(self.monsterCoordinates)
         self.exitCoordinates = [y,x]
         self.lastPlayerAction = ""
 
     def runGame(self, player):
+        visitedCoordinates=[]
+        for _ in range(500):
+            y,x = self.getPlayerLocation()
+            if not [y,x] in visitedCoordinates:
+                visitedCoordinates.append([y,x])
+            action = player.perform(self)
+            #Use action to perform movement/attack
+            self.performPlayerAction(action)
+            if(self.score<-500):
+                print(action)
+            if self.checkFinished():
+                return
+            for monster in self.monsters:
+                action = monster.play(self)
+                #update map given action
+                self.updateMap(monster, action)
+                
+            if self.checkFinished():
+                return
+        self.score+=10*len(visitedCoordinates)
+
+    def runAndPrintGame(self, player):
         for _ in range(500):
             action = player.perform(self)
             #Use action to perform movement/attack
@@ -33,13 +55,16 @@ class maze:
                 
             if self.checkFinished():
                 return
+            print(self.map)
+        y,x = self.getPlayerLocation()
+        self.score=float(self.score)-abs(y-self.exitCoordinates[0])*10-abs(x-self.exitCoordinates[1])*10
             
     #Assumes the player replaces the Exit node, thus leaving an "S" in the place of the "E"
     #If then the player is gone we can assume a monster killed it and the game is finished
     def checkFinished(self):
         y,x = self.getPlayerLocation()
         if x is None or y is None:
-            self.score-=50
+            self.score-=500
             return True
         elif y == self.exitCoordinates[0] and x == self.exitCoordinates[1]:
             self.score+=1000
@@ -138,7 +163,7 @@ class maze:
                 elif not self.map[y-1,x]=="*":
                     self.map[y-1,x]="S"
                     self.map[y,x]="O"
-                    self.score+=2
+                    #self.score+=2
                 else:
                     self.score-=1
             else:
@@ -151,7 +176,7 @@ class maze:
                 elif not self.map[y,x+1]=="*":
                     self.map[y,x+1]="S"
                     self.map[y,x]="O"
-                    self.score+=2
+                    #self.score+=2
                 else:
                     self.score-=1
             else:
@@ -164,7 +189,7 @@ class maze:
                 elif not self.map[y+1,x]=="*":
                     self.map[y+1,x]="S"
                     self.map[y,x]="O"
-                    self.score+=2
+                    #self.score+=2
                 else:
                     self.score-=1
             else:
@@ -177,7 +202,7 @@ class maze:
                 elif not self.map[y,x-1]=="*":
                     self.map[y,x-1]="S"
                     self.map[y,x]="O"
-                    self.score+=2
+                    #self.score+=2
                 else:
                     self.score-=1
             else:
@@ -235,6 +260,9 @@ class maze:
                     return False
             if self.map[y][x]==symbol:
                 return True
+            if self.map[y][x]=="*": #We are looking at a wall, and the wall
+                #is not our target. Thus it is false.
+                return False
         return False
 
     def checkMonster(self, direction,steps):
