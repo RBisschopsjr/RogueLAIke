@@ -9,7 +9,7 @@ actions = ["moveN", "moveE", "moveS", "moveW",
            "attackN", "attackE", "attackS", "attackN",
            "stop"] #All actions possible in the game.
 considerations = []
-mutationRate=0.05 #Chance that a given branch or leaf mutates.
+mutationRate=0.1 #Chance that a given branch or leaf mutates.
 
 # Class that considers the last action of the player, and if this is the same as the action it should check for.
 # Part of strategy pattern for considerations
@@ -82,9 +82,9 @@ class Branch:
     #Do an action given the decision of our consideration.
     def perform(self,model):
         if self.consider.decide(model):
-            self.left.perform(model)
+            return self.left.perform(model)
         else:
-            self.right.perform(model)
+            return self.right.perform(model)
 
     #Print the tree: show the actions of left and right, and the consideration in this branch.
     def printTree(self):
@@ -131,7 +131,22 @@ class Branch:
     # We will not mutate the branches if this branch is mutated.
     def mutate(self):
         if random.uniform(0,1)<mutationRate:
-            return generateRandomBranch()
+            if random.randint(0,1)==1:
+                self.consider= considerations[random.randint(0,len(considerations)-1)]
+                self.left=self.left.mutate()
+                self.right=self.right.mutate()
+                return self
+            else:
+                newBranch = generateRandomBranch()
+                try:
+                    newBranch.left=newBranch.left.mutate()
+                except:
+                    pass
+                try:
+                    newBranch.right=newBranch.right.mutate()
+                except:
+                    pass
+                return newBranch
         else:
             self.left=self.left.mutate()
             self.right=self.right.mutate()
@@ -304,6 +319,7 @@ def evolve(population, maxGenerations):
     for generation in range(maxGenerations):
         print (generation)
         fitnesses = getFitnesses(population)
+        print(fitnesses)
         survivors, population, fitnesses = getSurvivors(population, fitnesses)
         survivors, population = getNextGen(survivors,population)
                 
@@ -345,10 +361,10 @@ def generateConsiderations(allowedMaxStep):
             considerations.append(exitConsideration(direction, steps))
 
 if __name__ == "__main__":
-    individuals=100;
-    generateConsiderations(3)
+    individuals=10;
+    generateConsiderations(1)
     population=createIndividuals(individuals)
-    score, bestIndividu = evolve(population, 100)
+    score, bestIndividu = evolve(population, 1000)
     print(score)
     bestIndividu.printTree()
     

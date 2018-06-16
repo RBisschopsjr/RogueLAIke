@@ -22,7 +22,8 @@ class maze:
             action = player.perform(self)
             #Use action to perform movement/attack
             self.performPlayerAction(action)
-            
+            if(self.score<-500):
+                print(action)
             if self.checkFinished():
                 return
             for monster in self.monsters:
@@ -110,7 +111,8 @@ class maze:
                     self.removeMonster([y,x+1])
                 else:
                     self.score-=1
-            self.score-=1
+            else:
+                self.score-=1
         elif action=="attackS":
             if not y+1==self.map.shape[0]:
                 if self.map[y+1,x]=="M":
@@ -136,7 +138,7 @@ class maze:
                 elif not self.map[y-1,x]=="*":
                     self.map[y-1,x]="S"
                     self.map[y,x]="O"
-                    self.score+=1
+                    self.score+=2
                 else:
                     self.score-=1
             else:
@@ -149,7 +151,7 @@ class maze:
                 elif not self.map[y,x+1]=="*":
                     self.map[y,x+1]="S"
                     self.map[y,x]="O"
-                    self.score+=1
+                    self.score+=2
                 else:
                     self.score-=1
             else:
@@ -162,7 +164,7 @@ class maze:
                 elif not self.map[y+1,x]=="*":
                     self.map[y+1,x]="S"
                     self.map[y,x]="O"
-                    self.score+=1
+                    self.score+=2
                 else:
                     self.score-=1
             else:
@@ -175,7 +177,7 @@ class maze:
                 elif not self.map[y,x-1]=="*":
                     self.map[y,x-1]="S"
                     self.map[y,x]="O"
-                    self.score+=1
+                    self.score+=2
                 else:
                     self.score-=1
             else:
