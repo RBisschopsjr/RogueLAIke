@@ -48,6 +48,8 @@ class maze:
             if self.checkFinished():
                 return
 
+    #Runs the game: let the player make the first move during a turn, then each monster.
+    # End game when player reached exit or is finished. Print the maze per turn.
     def runAndPrintGame(self, player):
         for _ in range(500):
             action = player.perform(self)
@@ -65,8 +67,7 @@ class maze:
             if self.checkFinished():
                 return
             print(self.map)
-        y,x = self.getPlayerLocation()
-        self.score=float(self.score)-abs(y-self.exitCoordinates[0])*10-abs(x-self.exitCoordinates[1])*10
+
             
     #Assumes the player replaces the Exit node, thus leaving an "S" in the place of the "E"
     #If then the player is gone we can assume a monster killed it and the game is finished
@@ -217,21 +218,25 @@ class maze:
         elif action=="stop":
             self.score+=wrongStepScore
 
+    #Remove the monster at a set coordinates from the game.
     def removeMonster(self, coordinates):
         index=self.monsterCoordinates.index(coordinates)
         self.monsterCoordinates.remove(coordinates)
         self.monsters.pop(index)
         self.map[coordinates[0], coordinates[1]] = 'O'
 
+    # Get the coordinates of a given monster.
     def getMonsterLocation(self, monster):
         index = self.monsters.index(monster)
         return self.monsterCoordinates[index]
     
+    # Set the coordinates of a monster.
     def setMonsterLocation(self, monster, y, x):
         index = self.monsters.index(monster)
         self.monsterCoordinates[index][0] = y
         self.monsterCoordinates[index][1] = x
 
+    # Get the coordinates of where the player is.
     def getPlayerLocation(self):
         for row in range(len(self.map)):
             for column in range(len(self.map[0])):
@@ -239,9 +244,11 @@ class maze:
                     return row, column
         return None, None
 
+    # Get the game score.
     def getScore(self):
         return self.score
 
+    #Check if a certain symbol is present in steps in a given direction.
     def checkSymbol(self, direction, steps, symbol):
         y,x = self.getPlayerLocation()
         if direction=="North":
@@ -268,14 +275,18 @@ class maze:
             return True
         return False
 
+    #Check if a monster is in a direction in steps.
     def checkMonster(self, direction,steps):
         return self.checkSymbol(direction, steps, "M")
 
+    #Check if an exit is in a direction in steps.
     def checkExit(self, direction,steps):
         return self.checkSymbol(direction, steps, "E")
 
+    #Check if an open space is in a direction in steps.
     def checkSpace(self, direction,steps):
         return self.checkSymbol(direction, steps, "O")
 
+    #Get the last action the player performed.
     def getLastPlayerAction(self):
         return self.lastPlayerAction
