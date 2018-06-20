@@ -1,6 +1,6 @@
 import random
 import copy
-import Maze
+import maze
 
 global actions
 global considerations
@@ -227,18 +227,11 @@ def createIndividuals(numberOf):
 # Get the fitnesses of each individual in the population by playing the game and getting the score.
 def getFitnesses(population):
     fitnesses = []
-    mazes=[]
-    for _ in range(5):
-        game = Maze.maze()
-        mazes.append(game)
-    #game = maze.maze()
+    game = maze.maze()
     for indi in population: # For each individual, keep playing the game until it is finished and returns a score.
-        totalScore= 0
-        for maze in mazes:
-            usedGame = copy.deepcopy(maze)
-            usedGame.runGame(indi)
-            totalScore+=usedGame.getScore()
-        fitnesses.append(float(totalScore)/5.0)
+        usedGame = copy.deepcopy(game)
+        usedGame.runGame(indi)
+        fitnesses.append(usedGame.getScore())
     return fitnesses
 
 
@@ -330,8 +323,8 @@ def evolve(population, maxGenerations):
         if fitnesses[fitnessInd]>=bestScore:
             bestScore=fitnesses[fitnessInd]
             bestIndividu=population[fitnessInd]
-    testGame= Maze.maze()
-    testGame.runAndPrintGame(bestIndividu)
+    #testGame= maze.maze()
+    #testGame.runAndPrintGame(bestIndividu)
     return bestScore, bestIndividu
     
     
@@ -364,13 +357,12 @@ def generateConsiderations(allowedMaxStep):
             considerations.append(exitConsideration(direction, steps))
 
 if __name__ == "__main__":
-    for i in range(0,100):
-        individuals=30;
-        generateConsiderations(1)
-        population=createIndividuals(individuals)
-        score, bestIndividu = evolve(population, 1000)
-        print(score)
-        with open('run' + str(i) + '.txt', 'w') as file:
-            file.write(str(score) + '\n')
-            file.write(bestIndividu.getString(1))
+    individuals=10
+    generations=100
+    
+    generateConsiderations(1)
+    population=createIndividuals(individuals)
+    score, bestIndividu = evolve(population, generations)
+    print(score)
+    print(bestIndividu.getString(1))
         

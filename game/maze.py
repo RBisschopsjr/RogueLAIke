@@ -6,7 +6,10 @@ import sys
 from makeMaze import *
 from Monster import *
 
-global stepScore, wrongStepScore, monsterScore, exitScore, deathScore, wrongAttack
+global stepScore, wrongStepScore, monsterScore, exitScore, deathScore, wrongAttack, numOfMonsters, gridSize
+gridSize = [10,10]
+numOfMonsters = 3
+
 walkScore = 2
 monsterScore = 50
 exitScore = 1000
@@ -17,11 +20,12 @@ deathScore = -100
 
 class maze:
     def __init__(self):
+        global numOfMonsters, gridSize
         self.score=0
-        grid = initGrid(10,10)
+        grid = initGrid(gridSize[0],gridSize[1])
         mazeWithStart = generateStart(grid)
         path = buildMaze(mazeWithStart[0], [mazeWithStart[1]])
-        self.map, y, x, self.monsterCoordinates = drawPath(mazeWithStart[0], path,3)
+        self.map, y, x, self.monsterCoordinates = drawPath(mazeWithStart[0], path,numOfMonsters)
         self.monsters = self.assignMonsters(self.monsterCoordinates)
         self.exitCoordinates = [y,x]
         self.lastPlayerAction = ""
@@ -29,11 +33,8 @@ class maze:
     #Runs the game: let the player make the first move during a turn, then each monster.
     # End game when player reached exit or is finished.
     def runGame(self, player):
-        visitedCoordinates=[]
         for _ in range(500):
             action = player.perform(self)
-            scores.append(self.score)
-            
             
             #Use action to perform movement/attack
             self.performPlayerAction(action)

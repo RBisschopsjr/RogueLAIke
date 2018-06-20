@@ -36,8 +36,6 @@ class randomPlayer:
 
 if __name__ == "__main__":
     randomPlayer = randomPlayer()
-    for i in range(100):
-        i = None
-        i = maze.maze()
-        i.runGame(randomPlayer)
-        print(i.getScore())
+    maze = maze.maze()
+    maze.runGame(randomPlayer)
+    print(maze.getScore())
