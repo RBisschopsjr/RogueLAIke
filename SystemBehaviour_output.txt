@@ -174,7 +174,7 @@ Individual with fitness:  -112  added to next generation!
 -112 VERSUS -108
 Individual with fitness:  -108  added to next generation!
 -200 VERSUS -200
-Individual with fitness:  -175  added to next generation!
+Individual with fitness:  -200  added to next generation!
 -134 VERSUS -142
 Individual with fitness:  -134  added to next generation!
 -118 VERSUS -166
