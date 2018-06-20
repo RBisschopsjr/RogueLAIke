@@ -30,9 +30,9 @@ class Monster:
     def getReverseAction(self,direction):
         if direction == "moveS":
             return "moveN"
-        if direction == "moveS":
-            return "moveN"
-        if direction == "moveS":
-            return "moveN"
-        if direction == "moveS":
-            return "moveN"
+        if direction == "moveE":
+            return "moveW"
+        if direction == "moveN":
+            return "moveS"
+        if direction == "moveW":
+            return "moveE"

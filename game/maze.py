@@ -6,6 +6,15 @@ import sys
 from makeMaze import *
 from Monster import *
 
+global stepScore, wrongStepScore, monsterScore, exitScore, deathScore, wrongAttack
+walkScore = 2
+monsterScore = 50
+exitScore = 1000
+
+wrongStepScore = -1
+wrongAttack = -20
+deathScore = -100
+
 class maze:
     def __init__(self):
         self.score=0
@@ -18,13 +27,17 @@ class maze:
         self.lastPlayerAction = ""
 
     def runGame(self, player):
-        for _ in range(500):
+        scores = []
+        for x in range(500):
             action = player.perform(self)
+            scores.append(self.score)
+            
+            
             #Use action to perform movement/attack
             self.performPlayerAction(action)
-            if(self.score<-500):
-                print(action)
             if self.checkFinished():
+                if 1144 in scores:
+                    print(scores)
                 return
             for monster in self.monsters:
                 action = monster.play(self)
@@ -32,17 +45,20 @@ class maze:
                 self.updateMap(monster, action)
                 
             if self.checkFinished():
-                return
+                if 1144 in scores:
+                    print(scores)
+                return scores
             
     #Assumes the player replaces the Exit node, thus leaving an "S" in the place of the "E"
     #If then the player is gone we can assume a monster killed it and the game is finished
     def checkFinished(self):
+        global deathScore, exitScore
         y,x = self.getPlayerLocation()
         if x is None or y is None:
-            self.score-=50
+            self.score += deathScore
             return True
         elif y == self.exitCoordinates[0] and x == self.exitCoordinates[1]:
-            self.score+=1000
+            self.score += exitScore
             return True
         else:
             return False
@@ -96,51 +112,42 @@ class maze:
         return directions
     
     def performPlayerAction(self,action):
+        global monsterScore, walkScore, wrongStepScore, wrongAttack
         y,x = self.getPlayerLocation()
-        if action=="attackN":
-            if not y-1<0:
+        monsters_killed = 0
+        if action=="attack":
+            if y > 0:
                 if self.map[y-1,x]=="M":
                     self.removeMonster([y-1,x])
-                else:
-                    self.score-=1
-            else:
-                self.score-=1
-        elif action=="attackE":
-            if not x+1==self.map.shape[1]:
-                if self.map[y,x+1]=="M":
-                    self.removeMonster([y,x+1])
-                else:
-                    self.score-=1
-            else:
-                self.score-=1
-        elif action=="attackS":
-            if not y+1==self.map.shape[0]:
+                    monsters_killed+=1
+            if y < len(self.map)-1:
                 if self.map[y+1,x]=="M":
                     self.removeMonster([y+1,x])
-                else:
-                    self.score-=1
-            else:
-                self.score-=1
-        elif action=="attackW":
-            if not x-1<0:
+                    monsters_killed+=1
+            if x > 0:
                 if self.map[y,x-1]=="M":
                     self.removeMonster([y,x-1])
-                else:
-                    self.score-=1
+                    monsters_killed+=1
+            if x < len(self.map)-1:
+                if self.map[y,x+1]=="M":
+                    self.removeMonster([y,x+1])
+                    monsters_killed+=1
+                
+            if monsters_killed > 0:
+                self.score+=monsters_killed*monsterScore
             else:
-                self.score-=1
-                    
+                self.score+=wrongAttack
         elif action=="moveN":
             self.lastPlayerAction="North"
             if not y-1<0:
                 if self.map[y-1,x]=="M":
                     self.map[y,x]="O"
                 elif not self.map[y-1,x]=="*":
+                    self.score+=walkScore
                     self.map[y-1,x]="S"
-                    self.map[y,x]="O"
-                    self.score+=2
+                    self.map[y,x]="O"  
                 else:
-                    self.score-=1
+                    self.score+=wrongStepScore
             else:
                 self.score-=1
         elif action=="moveE":
@@ -149,11 +156,11 @@ class maze:
                 if self.map[y,x+1]=="M":
                     self.map[y,x]="O"
                 elif not self.map[y,x+1]=="*":
+                    self.score+=walkScore
                     self.map[y,x+1]="S"
-                    self.map[y,x]="O"
-                    self.score+=2
+                    self.map[y,x]="O"  
                 else:
-                    self.score-=1
+                    self.score+=wrongStepScore
             else:
                 self.score-=1
         elif action=="moveS":
@@ -161,12 +168,12 @@ class maze:
             if not y+1==self.map.shape[0]:
                 if self.map[y+1,x]=="M":
                     self.map[y,x]="O"
-                elif not self.map[y+1,x]=="*":
+                elif not self.map[y+1,x]=="*":  
+                    self.score+=walkScore
                     self.map[y+1,x]="S"
-                    self.map[y,x]="O"
-                    self.score+=2
+                    self.map[y,x]="O"  
                 else:
-                    self.score-=1
+                    self.score+=wrongStepScore
             else:
                 self.score-=1
         elif action=="moveW":
@@ -175,22 +182,21 @@ class maze:
                 if self.map[y,x-1]=="M":
                     self.map[y,x]="O"
                 elif not self.map[y,x-1]=="*":
+                    self.score+=walkScore
                     self.map[y,x-1]="S"
-                    self.map[y,x]="O"
-                    self.score+=2
+                    self.map[y,x]="O"  
                 else:
-                    self.score-=1
+                    self.score+=wrongStepScore
             else:
-                self.score-=1
+                self.score+=wrongStepScore
         elif action=="stop":
-            self.score-=1
+            self.score+=wrongStepScore
 
     def removeMonster(self, coordinates):
         index=self.monsterCoordinates.index(coordinates)
         self.monsterCoordinates.remove(coordinates)
         self.monsters.pop(index)
         self.map[coordinates[0], coordinates[1]] = 'O'
-        self.score+=10
 
     def getMonsterLocation(self, monster):
         index = self.monsters.index(monster)
@@ -225,16 +231,16 @@ class maze:
         else: #or direction is East
             modx=-1
             mody=0
-        for step in range(steps):
-            x+=modx
-            y+=mody
-            if x<0 or x==self.map.shape[1] or y<0 or y==self.map.shape[0]:
-                if symbol=="*":
-                    return True
-                else:
-                    return False
-            if self.map[y][x]==symbol:
+            
+        x+=modx*steps
+        y+=mody*steps
+        if x<0 or x>=self.map.shape[1] or y<0 or y>=self.map.shape[0]:
+            if symbol=="*":
                 return True
+            else:
+                return False
+        if self.map[y][x]==symbol:
+            return True
         return False
 
     def checkMonster(self, direction,steps):
@@ -243,8 +249,8 @@ class maze:
     def checkExit(self, direction,steps):
         return self.checkSymbol(direction, steps, "E")
 
-    def checkWall(self, direction,steps):
-        return self.checkSymbol(direction, steps, "*")
+    def checkSpace(self, direction,steps):
+        return self.checkSymbol(direction, steps, "O")
 
     def getLastPlayerAction(self):
         return self.lastPlayerAction
