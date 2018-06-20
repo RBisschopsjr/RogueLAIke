@@ -15,28 +15,29 @@ class randomPlayer:
         choice=random.randint(0,len(self.directions)-1)
         if self.directions[choice]=="North":
             if model.checkMonster("North",1):
-                return "attackN"
+                return "attack"
             else:
                 return "moveN"
         elif self.directions[choice]=="East":
             if model.checkMonster("East",1):
-                return "attackE"
+                return "attack"
             else:
                 return "moveE"
         elif self.directions[choice]=="South":
             if model.checkMonster("South",1):
-                return "attackS"
+                return "attack"
             else:
                 return "moveS"
         else:
             if model.checkMonster("West",1):
-                return "attackW"
+                return "attack"
             else:
                 return "moveW"
 
 if __name__ == "__main__":
     randomPlayer = randomPlayer()
-    maze = maze.maze()
-    maze.runGame(randomPlayer)
-    print(maze.getScore())
-    print(maze.map)
+    for i in range(100):
+        i = None
+        i = maze.maze()
+        i.runGame(randomPlayer)
+        print(i.getScore())

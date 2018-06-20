@@ -5,10 +5,8 @@ import Maze
 global actions
 global considerations
 global mutationRate
-actions = ["moveN", "moveE", "moveS", "moveW","stop"]
-##actions = ["moveN", "moveE", "moveS", "moveW",
-##           "attackN", "attackE", "attackS", "attackN",
-##           "stop"] #All actions possible in the game.
+actions = ["moveN", "moveE", "moveS", "moveW",
+           "attack", "stop"] #All actions possible in the game.
 considerations = []
 mutationRate=0.1 #Chance that a given branch or leaf mutates.
 
@@ -22,9 +20,10 @@ class directionConsideration:
     def decide(self,model):
         return model.getLastPlayerAction()==self.direction
 
-    #Print out what the consideration exactly is.
-    def printItself(self):
-        print("Player consideration ", self.direction)
+    #Returns the structure of this consideration as string
+    def getString(self, tabs):
+        return("last action " + str(self.direction))
+
 
 #Class that considers if there is an monster in n steps. Part of strategy pattern for considerations
 class monsterConsideration:
@@ -36,23 +35,23 @@ class monsterConsideration:
     def decide(self,model):
         return model.checkMonster(self.direction,self.steps)
 
-    #Print out what the consideration exactly is.
-    def printItself(self):
-        print ("Monster ", self.steps, " ", self.direction)
+    #Returns the structure of this consideration as string
+    def getString(self, tabs):
+        return("monster " + str(self.steps) + " " + str(self.direction))
 
-#Class that considers if there is an wall in n steps. Part of strategy pattern for considerations
-class wallConsideration:
+#Class that considers if there is an open space in n steps. Part of strategy pattern for considerations
+class spaceConsideration:
     def __init__(self,direction, steps):
         self.direction=direction
         self.steps=steps
 
     #Check the game if there is a wall with a certain amount of steps.
     def decide(self,model):
-        return model.checkWall(self.direction,self.steps)
+        return model.checkSpace(self.direction,self.steps)
 
-    #Print out what the consideration exactly is.
-    def printItself(self):
-        print ("wall ", self.steps, " ",self.direction)
+    #Returns the structure of this consideration as string
+    def getString(self, tabs):
+        return("space " + str(self.steps) + " " + str(self.direction))
 
 #Class that considers if there is an exit in n steps. Part of strategy pattern for considerations
 class exitConsideration:
@@ -64,10 +63,10 @@ class exitConsideration:
     def decide(self,model):
         return model.checkExit(self.direction,self.steps)
 
-    #Print out what the consideration exactly is.
-    def printItself(self):
-        print ("exit ", self.steps, " ",self.direction)
-
+    #Returns the structure of this consideration as string
+    def getString(self, tabs):
+        return("exit " + str(self.steps) + " " + str(self.direction))
+    
 
 #The Genetic Program structure. It contains a left branch and right branch, both which can be a branch or a leaf. For the game, the first branch is the player.
 class Branch:
@@ -88,12 +87,10 @@ class Branch:
             return self.right.perform(model)
 
     #Print the tree: show the actions of left and right, and the consideration in this branch.
-    def printTree(self):
-        self.left.printTree()
-        self.consider.printItself()
-        self.right.printTree()
-        print(" ")
-
+    def getString(self, tabs):
+        #return (str(tabs) + (tabs-1)*'\t' + self.consider.getString(tabs+1) + '\n' + str(tabs) + tabs*'\t' + self.left.getString(tabs+1) + '\n' + str(tabs) + tabs*'\t' + self.right.getString(tabs+1))
+        return (self.consider.getString(tabs+1) + '\n' + tabs*'\t' + self.left.getString(tabs+1) + '\n' + tabs*'\t' + self.right.getString(tabs+1))
+    
     #Returns the size of the tree: size of left+ size of right+itself.
     def getSizeTree(self):
         return self.left.getSizeTree()+1+self.right.getSizeTree()
@@ -101,7 +98,7 @@ class Branch:
     # Get a random branch in the tree. This function should only be called from the top: it returns the selected location in the tree as well.
     def getRandomBranch(self):
         size=self.getSizeTree() # Figure out how big the tree is in order to pick a random branch.
-        branchSelected=random.randint(2,size) #Select branch.
+        branchSelected=random.randint(1,size) #Select branch.
         result, _ = self.getBranch(branchSelected) #Get branch.
         return result, branchSelected
 
@@ -166,7 +163,11 @@ class Leaf:
     # Perform the action specified in the leaf.
     def perform(self,model):
         return self.action
-
+    
+    #Return the action contained in the leaf.
+    def getString(self, tabs):
+        return str(self.action)
+    
     #Print the action contained in the leaf.
     def printTree(self):
         print (self.action)
@@ -300,14 +301,6 @@ def getNextGen(survivors, population):
             daughter=mom.clone() #Daugher is a copy of mom with one branch from the father.
             son=dad.clone() # Son is a copy of the dad with one branch from the mother.
             daughter.replaceBranch(dadGen,momSwap)
-##            print("mom")
-##            mom.printTree()
-##            print("dadGen")
-##            dadGen.printTree()
-##            print("momSwap")
-##            print(momSwap)
-##            print("daughter")
-##            daughter.printTree()
             son.replaceBranch(momGen,dadSwap)
             son=son.mutate() #Mutate the two children.
             daughter=daughter.mutate()
@@ -326,26 +319,22 @@ def getNextGen(survivors, population):
 # of the code, regardless of the amount of max generations.
 def evolve(population, maxGenerations):
     for generation in range(maxGenerations):
-        print (generation)
         fitnesses = getFitnesses(population)
-##        for index in range(len(fitnesses)):
-##            if fitnesses[index]==0:
-##                population[index].printTree()
-        print(fitnesses)
         survivors, population, fitnesses = getSurvivors(population, fitnesses)
         survivors, population = getNextGen(survivors,population)
-                
-    #Check which individual performs the best.
+    
     fitnesses = getFitnesses(population)
-    bestScore =-10000
+    bestScore =-1000
     bestIndividu = None
     for fitnessInd in range(len(fitnesses)-1):
-        if fitnesses[fitnessInd]>bestScore:
+        if fitnesses[fitnessInd]>=bestScore:
             bestScore=fitnesses[fitnessInd]
             bestIndividu=population[fitnessInd]
     testGame= Maze.maze()
     testGame.runAndPrintGame(bestIndividu)
     return bestScore, bestIndividu
+    
+    
     
 # Generate a random branch: branch can be a leaf or a branch.
 # We pick out a random index from the list [actions,considerations].
@@ -370,15 +359,18 @@ def generateConsiderations(allowedMaxStep):
     for direction in directions:
         considerations.append(directionConsideration(direction))
         for steps in range(1,allowedMaxStep+1):
-            #considerations.append(monsterConsideration(direction, steps))
-            considerations.append(wallConsideration(direction, steps))
-            #considerations.append(exitConsideration(direction, steps))
+            considerations.append(monsterConsideration(direction, steps))
+            considerations.append(spaceConsideration(direction, steps))
+            considerations.append(exitConsideration(direction, steps))
 
 if __name__ == "__main__":
-    individuals=50;
-    generateConsiderations(3)
-    population=createIndividuals(individuals)
-    score, bestIndividu = evolve(population, 100)
-    print(score)
-    bestIndividu.printTree()
-    
+    for i in range(0,100):
+        individuals=30;
+        generateConsiderations(1)
+        population=createIndividuals(individuals)
+        score, bestIndividu = evolve(population, 1000)
+        print(score)
+        with open('run' + str(i) + '.txt', 'w') as file:
+            file.write(str(score) + '\n')
+            file.write(bestIndividu.getString(1))
+        
