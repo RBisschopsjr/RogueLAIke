@@ -482,5 +482,3 @@ Individual with fitness:  -218  added to next generation!
 [-80, -96, -102, -92, -92, -96, -96, -142, -110, -146, -96, -112]
 *****Best end fitness*****
  -80
-
-Process finished with exit code 0
