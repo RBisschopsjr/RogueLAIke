@@ -13,7 +13,7 @@ The directory **game** contains all the relevant files:
 ## How to run the game
 To run the game for the RandomPlayer, you can run the `RandomPlayer.py`
 
-To run the game for the Genentic Program, you can run the `Genetic programming.py`. Here you have to possibility to change some parameters for the algorithm. In the first two lines of the main function you can change the amount of individuals in a population and the amount of generations.
+To run the game for the Genetic Program, you can run the `Genetic programming.py`. Here you have to possibility to change some parameters for the algorithm. In the first two lines of the main function you can change the amount of individuals in a population and the amount of generations. Mutation Rate and possible actions can be adjusted in the first eleven lines of the code
 
 To alter something in the game, you need to go to `maze.py`. The top of the file has initialized a lot of global variables, here you can alter everything:
 * gridSize		- needs to be an array with two values (e.g. [10,10])
