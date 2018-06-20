@@ -26,6 +26,8 @@ class maze:
         self.exitCoordinates = [y,x]
         self.lastPlayerAction = ""
 
+    #Runs the game: let the player make the first move during a turn, then each monster.
+    # End game when player reached exit or is finished.
     def runGame(self, player):
         scores = []
         for x in range(500):
@@ -36,8 +38,6 @@ class maze:
             #Use action to perform movement/attack
             self.performPlayerAction(action)
             if self.checkFinished():
-                if 1144 in scores:
-                    print(scores)
                 return
             for monster in self.monsters:
                 action = monster.play(self)
@@ -45,9 +45,7 @@ class maze:
                 self.updateMap(monster, action)
                 
             if self.checkFinished():
-                if 1144 in scores:
-                    print(scores)
-                return scores
+                return
             
     #Assumes the player replaces the Exit node, thus leaving an "S" in the place of the "E"
     #If then the player is gone we can assume a monster killed it and the game is finished
@@ -63,6 +61,7 @@ class maze:
         else:
             return False
 
+    #Updates the map given the action of monster.
     def updateMap(self, monster, action):
         y,x = self.getMonsterLocation(monster)[0], self.getMonsterLocation(monster)[1]
         if action == "moveN":
@@ -81,13 +80,16 @@ class maze:
             self.setMonsterLocation(monster, y,x-1)
             self.map[y][x] = 'O'
             self.map[y][x-1] = 'M'
-        
+
+    #Assign monster objects to each monster coordinate.
     def assignMonsters(self, monsterCoordinates):
         monsters=[]
         for monster in monsterCoordinates:
             monsters.append(Monster())
         return monsters
 
+    #Gets all possible directions for a monster to move towards to. If there is a wall or a monster or out of bounds,
+    # that action is not possible.
     def getDirections(self, monster):
         directions = []
         coordinates = self.getMonsterLocation(monster)
@@ -110,7 +112,9 @@ class maze:
                 directions.append("moveW")
 
         return directions
-    
+
+    #Performs the action that the player indicated he wanted to perform. For attacks,
+    #check if a monster got killed and assign score accordingly.
     def performPlayerAction(self,action):
         global monsterScore, walkScore, wrongStepScore, wrongAttack
         y,x = self.getPlayerLocation()

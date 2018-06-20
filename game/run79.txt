@@ -1,0 +1,36 @@
+240
+space 1 East
+	monster 1 North
+		monster 1 East
+			exit 1 North
+				monster 1 North
+					attack
+					exit 1 South
+						moveE
+						moveW
+				last action South
+					exit 1 West
+						stop
+						moveS
+					moveS
+			exit 1 East
+				attack
+				moveN
+		last action South
+			stop
+			exit 1 West
+				moveW
+				moveE
+	last action West
+		last action West
+			last action West
+				last action East
+					exit 1 West
+						attack
+						moveN
+					moveE
+				moveW
+			monster 1 South
+				moveS
+				moveE
+		moveW

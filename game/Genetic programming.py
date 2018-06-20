@@ -20,12 +20,10 @@ class directionConsideration:
     def decide(self,model):
         return model.getLastPlayerAction()==self.direction
 
+    #Returns the structure of this consideration as string
     def getString(self, tabs):
         return("last action " + str(self.direction))
 
-    #Print out what the consideration exactly is.
-    def printItself(self):
-        print("Player consideration ", self.direction)
 
 #Class that considers if there is an monster in n steps. Part of strategy pattern for considerations
 class monsterConsideration:
@@ -37,14 +35,11 @@ class monsterConsideration:
     def decide(self,model):
         return model.checkMonster(self.direction,self.steps)
 
+    #Returns the structure of this consideration as string
     def getString(self, tabs):
         return("monster " + str(self.steps) + " " + str(self.direction))
 
-    #Print out what the consideration exactly is.
-    def printItself(self):
-        print ("Monster ", self.steps, " ", self.direction)
-
-#Class that considers if there is an wall in n steps. Part of strategy pattern for considerations
+#Class that considers if there is an open space in n steps. Part of strategy pattern for considerations
 class spaceConsideration:
     def __init__(self,direction, steps):
         self.direction=direction
@@ -54,12 +49,9 @@ class spaceConsideration:
     def decide(self,model):
         return model.checkSpace(self.direction,self.steps)
 
+    #Returns the structure of this consideration as string
     def getString(self, tabs):
         return("space " + str(self.steps) + " " + str(self.direction))
-        
-    #Print out what the consideration exactly is.
-    def printItself(self):
-        print ("space ", self.steps, " ",self.direction)
 
 #Class that considers if there is an exit in n steps. Part of strategy pattern for considerations
 class exitConsideration:
@@ -71,13 +63,10 @@ class exitConsideration:
     def decide(self,model):
         return model.checkExit(self.direction,self.steps)
 
+    #Returns the structure of this consideration as string
     def getString(self, tabs):
         return("exit " + str(self.steps) + " " + str(self.direction))
     
-    #Print out what the consideration exactly is.
-    def printItself(self):
-        print ("exit ", self.steps, " ",self.direction)
-
 
 #The Genetic Program structure. It contains a left branch and right branch, both which can be a branch or a leaf. For the game, the first branch is the player.
 class Branch:
@@ -304,14 +293,6 @@ def getNextGen(survivors, population):
             daughter=mom.clone() #Daugher is a copy of mom with one branch from the father.
             son=dad.clone() # Son is a copy of the dad with one branch from the mother.
             daughter.replaceBranch(dadGen,momSwap)
-##            print("mom")
-##            mom.printTree()
-##            print("dadGen")
-##            dadGen.printTree()
-##            print("momSwap")
-##            print(momSwap)
-##            print("daughter")
-##            daughter.printTree()
             son.replaceBranch(momGen,dadSwap)
             son=son.mutate() #Mutate the two children.
             daughter=daughter.mutate()
@@ -373,13 +354,13 @@ def generateConsiderations(allowedMaxStep):
             considerations.append(exitConsideration(direction, steps))
 
 if __name__ == "__main__":
-    for i in range(0,34):
+    for i in range(0,100):
         individuals=30;
         generateConsiderations(1)
         population=createIndividuals(individuals)
         score, bestIndividu = evolve(population, 1000)
         print(score)
         with open('run' + str(i) + '.txt', 'w') as file:
-            file.write(score + '\n')
+            file.write(str(score) + '\n')
             file.write(bestIndividu.getString(1))
         

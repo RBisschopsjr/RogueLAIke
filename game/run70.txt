@@ -1,0 +1,10 @@
+-2
+space 1 North
+	monster 1 North
+		space 1 South
+			moveW
+			attack
+		moveN
+	space 1 South
+		moveS
+		moveE

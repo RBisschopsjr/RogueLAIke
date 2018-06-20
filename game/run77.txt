@@ -1,0 +1,32 @@
+54
+exit 1 East
+	exit 1 North
+		moveE
+		last action East
+			stop
+			monster 1 South
+				exit 1 North
+					attack
+					exit 1 North
+						moveS
+						last action North
+							moveN
+							moveS
+				space 1 West
+					moveW
+					monster 1 South
+						monster 1 South
+							stop
+							moveE
+						monster 1 East
+							moveW
+							exit 1 West
+								stop
+								exit 1 South
+									attack
+									moveS
+	space 1 West
+		moveW
+		exit 1 West
+			moveN
+			moveE

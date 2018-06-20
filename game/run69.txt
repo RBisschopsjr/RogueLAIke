@@ -1,0 +1,22 @@
+-58
+monster 1 South
+	space 1 North
+		moveW
+		moveN
+	last action North
+		last action East
+			space 1 West
+				moveW
+				stop
+			space 1 West
+				moveW
+				last action North
+					space 1 South
+						moveS
+						moveE
+					moveW
+		space 1 West
+			moveW
+			exit 1 West
+				stop
+				moveE

@@ -1,0 +1,26 @@
+52
+space 1 North
+	space 1 North
+		space 1 North
+			moveN
+			monster 1 West
+				stop
+				exit 1 East
+					moveN
+					moveW
+		exit 1 East
+			moveW
+			space 1 West
+				attack
+				stop
+	space 1 North
+		exit 1 East
+			space 1 North
+				moveN
+				space 1 South
+					stop
+					moveE
+			moveS
+		space 1 East
+			moveE
+			moveS

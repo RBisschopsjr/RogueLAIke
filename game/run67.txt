@@ -1,0 +1,6 @@
+-50
+last action South
+	space 1 North
+		moveN
+		moveN
+	moveS

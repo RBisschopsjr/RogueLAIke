@@ -1,0 +1,22 @@
+116
+monster 1 East
+	last action North
+		monster 1 East
+			last action East
+				last action South
+					attack
+					stop
+				space 1 North
+					attack
+					moveS
+			monster 1 East
+				moveS
+				moveN
+		exit 1 West
+			stop
+			moveS
+	last action West
+		moveS
+		space 1 North
+			moveN
+			moveW

@@ -11,6 +11,7 @@ import time
 import sys
 from makeMaze import *
 
+# Debug file: this code is not used for random player or genetic program.
 
 def getPlayerLocation(matrix):
     #get begin point

@@ -1,0 +1,26 @@
+-36
+space 1 South
+	space 1 West
+		exit 1 South
+			space 1 East
+				moveN
+				moveE
+			moveW
+		exit 1 West
+			last action North
+				moveS
+				monster 1 North
+					attack
+					moveS
+			exit 1 South
+				moveN
+				moveS
+	exit 1 West
+		exit 1 South
+			moveW
+			space 1 South
+				moveN
+				attack
+		monster 1 East
+			moveN
+			moveN

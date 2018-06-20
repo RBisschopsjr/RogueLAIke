@@ -1,0 +1,8 @@
+84
+space 1 West
+	monster 1 East
+		moveS
+		moveW
+	space 1 South
+		moveS
+		moveE

@@ -1,0 +1,34 @@
+223
+space 1 North
+	exit 1 South
+		monster 1 South
+			last action South
+				moveW
+				monster 1 South
+					moveN
+					moveN
+			moveW
+		monster 1 South
+			exit 1 West
+				exit 1 North
+					moveS
+					exit 1 South
+						moveN
+						moveW
+				exit 1 West
+					exit 1 West
+						moveN
+						moveS
+					moveW
+			moveN
+	last action South
+		space 1 West
+			exit 1 North
+				moveN
+				moveE
+			moveW
+		exit 1 East
+			monster 1 East
+				stop
+				stop
+			moveS
