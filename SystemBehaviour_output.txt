@@ -1,16 +1,20 @@
+C:\Users\Rik\venv\Scripts\python.exe "C:/Users/Rik/Documents/GitHub/NC_rogueLAIke/RogueLAIke/game/Genetic programming.py"
+*****Fitness of indiviuals of generation  0 *****
+[-141, -108, -112, -18, -112, -145, -241, -150, -134, -142, -139, -142]
+
 *****Next generation selection*****
--221 VERSUS -126
-Individual with fitness:  -126  added to next generation!
--126 VERSUS -9790
-Individual with fitness:  -126  added to next generation!
--109 VERSUS -109
-Individual with fitness:  -109  added to next generation!
--136 VERSUS -110
-Individual with fitness:  -110  added to next generation!
--110 VERSUS -110
-Individual with fitness:  -110  added to next generation!
--134 VERSUS -134
-Individual with fitness:  -134  added to next generation!
+-241 VERSUS -150
+Individual with fitness:  -150  added to next generation!
+-141 VERSUS -142
+Individual with fitness:  -141  added to next generation!
+-145 VERSUS -112
+Individual with fitness:  -112  added to next generation!
+-18 VERSUS -112
+Individual with fitness:  -18  added to next generation!
+-134 VERSUS -108
+Individual with fitness:  -108  added to next generation!
+-139 VERSUS -139
+Individual with fitness:  -139  added to next generation!
 
 *****Generation  0  playing the game*****
 6  individuals left...
@@ -20,21 +24,21 @@ Individual with fitness:  -134  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  1 *****
-[-104, -113, -170, -168, -110, -150, -107, -171, -169, -135, -111, -105]
+[-98, -126, -98, -159, -841, -98, -138, -98, -184, -165, -102, -104]
 
 *****Next generation selection*****
--105 VERSUS -105
-Individual with fitness:  -105  added to next generation!
--135 VERSUS -110
-Individual with fitness:  -110  added to next generation!
--104 VERSUS -113
+-98 VERSUS -841
+Individual with fitness:  -98  added to next generation!
+-98 VERSUS -102
+Individual with fitness:  -98  added to next generation!
+-126 VERSUS -104
 Individual with fitness:  -104  added to next generation!
--171 VERSUS -168
-Individual with fitness:  -168  added to next generation!
--107 VERSUS -170
-Individual with fitness:  -107  added to next generation!
--169 VERSUS -111
-Individual with fitness:  -111  added to next generation!
+-138 VERSUS -98
+Individual with fitness:  -98  added to next generation!
+-159 VERSUS -98
+Individual with fitness:  -98  added to next generation!
+-165 VERSUS -184
+Individual with fitness:  -165  added to next generation!
 
 *****Generation  1  playing the game*****
 6  individuals left...
@@ -44,21 +48,21 @@ Individual with fitness:  -111  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  2 *****
-[-132, -110, -118, -118, -118, -118, -170, -110, -152, -110, -110, -106]
+[-102, -213, -106, -44, -102, -108, -122, -122, -108, -160, -108, -110]
 
 *****Next generation selection*****
--118 VERSUS -132
-Individual with fitness:  -118  added to next generation!
--170 VERSUS -118
-Individual with fitness:  -118  added to next generation!
--118 VERSUS -110
+-108 VERSUS -108
+Individual with fitness:  -108  added to next generation!
+-122 VERSUS -122
+Individual with fitness:  -122  added to next generation!
+-102 VERSUS -102
+Individual with fitness:  -102  added to next generation!
+-108 VERSUS -108
+Individual with fitness:  -108  added to next generation!
+-110 VERSUS -213
 Individual with fitness:  -110  added to next generation!
--110 VERSUS -106
-Individual with fitness:  -106  added to next generation!
--110 VERSUS -110
-Individual with fitness:  -110  added to next generation!
--152 VERSUS -152
-Individual with fitness:  -118  added to next generation!
+-102 VERSUS -102
+Individual with fitness:  -102  added to next generation!
 
 *****Generation  2  playing the game*****
 6  individuals left...
@@ -68,21 +72,21 @@ Individual with fitness:  -118  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  3 *****
-[-117, -150, -208, -124, -153, -225, -194, -209, -145, -127, -145, -126]
+[-126, -109, -114, -115, -109, -111, -124, -126, -109, -158, -152, -220]
 
 *****Next generation selection*****
--124 VERSUS -209
-Individual with fitness:  -124  added to next generation!
--145 VERSUS -127
-Individual with fitness:  -127  added to next generation!
--117 VERSUS -194
-Individual with fitness:  -117  added to next generation!
--150 VERSUS -208
-Individual with fitness:  -150  added to next generation!
--153 VERSUS -126
+-124 VERSUS -109
+Individual with fitness:  -109  added to next generation!
+-126 VERSUS -126
 Individual with fitness:  -126  added to next generation!
--145 VERSUS -145
-Individual with fitness:  -145  added to next generation!
+-220 VERSUS -109
+Individual with fitness:  -109  added to next generation!
+-115 VERSUS -111
+Individual with fitness:  -111  added to next generation!
+-158 VERSUS -114
+Individual with fitness:  -114  added to next generation!
+-152 VERSUS -152
+Individual with fitness:  -152  added to next generation!
 
 *****Generation  3  playing the game*****
 6  individuals left...
@@ -92,21 +96,21 @@ Individual with fitness:  -145  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  4 *****
-[-113, -95, -98, -103, -110, -110, -347, -102, -109, -117, -103, -103]
+[-118, -149, -173, -118, -125, -123, -120, -151, -133, -152, -3790, -240]
 
 *****Next generation selection*****
--109 VERSUS -98
-Individual with fitness:  -98  added to next generation!
--117 VERSUS -103
-Individual with fitness:  -103  added to next generation!
--103 VERSUS -103
-Individual with fitness:  -103  added to next generation!
--102 VERSUS -110
-Individual with fitness:  -102  added to next generation!
--95 VERSUS -103
-Individual with fitness:  -95  added to next generation!
--113 VERSUS -347
-Individual with fitness:  -113  added to next generation!
+-151 VERSUS -133
+Individual with fitness:  -133  added to next generation!
+-240 VERSUS -118
+Individual with fitness:  -118  added to next generation!
+-152 VERSUS -3790
+Individual with fitness:  -152  added to next generation!
+-125 VERSUS -118
+Individual with fitness:  -118  added to next generation!
+-120 VERSUS -149
+Individual with fitness:  -120  added to next generation!
+-123 VERSUS -123
+Individual with fitness:  -123  added to next generation!
 
 *****Generation  4  playing the game*****
 6  individuals left...
@@ -116,21 +120,21 @@ Individual with fitness:  -113  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  5 *****
-[-158, -154, -114, -142, -118, -139, -137, -136, -149, -214, -185, -174]
+[-138, -122, -128, -109, -121, -109, -3768, -117, -140, -105, -117, -123]
 
 *****Next generation selection*****
--139 VERSUS -137
-Individual with fitness:  -137  added to next generation!
--174 VERSUS -185
-Individual with fitness:  -174  added to next generation!
--214 VERSUS -158
-Individual with fitness:  -158  added to next generation!
--149 VERSUS -154
-Individual with fitness:  -149  added to next generation!
--136 VERSUS -118
-Individual with fitness:  -118  added to next generation!
--114 VERSUS -114
-Individual with fitness:  -114  added to next generation!
+-109 VERSUS -117
+Individual with fitness:  -109  added to next generation!
+-117 VERSUS -122
+Individual with fitness:  -117  added to next generation!
+-109 VERSUS -123
+Individual with fitness:  -109  added to next generation!
+-128 VERSUS -138
+Individual with fitness:  -128  added to next generation!
+-105 VERSUS -3768
+Individual with fitness:  -105  added to next generation!
+-121 VERSUS -121
+Individual with fitness:  -121  added to next generation!
 
 *****Generation  5  playing the game*****
 6  individuals left...
@@ -140,21 +144,21 @@ Individual with fitness:  -114  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  6 *****
-[-108, -156, -116, -120, -116, -110, -135, -9790, -107, -104, -117, -481]
+[-94, -136, -106, -94, -98, -113, -105, -94, -94, -115, -113, -94]
 
 *****Next generation selection*****
--117 VERSUS -156
-Individual with fitness:  -117  added to next generation!
--116 VERSUS -135
-Individual with fitness:  -116  added to next generation!
--116 VERSUS -120
-Individual with fitness:  -116  added to next generation!
--110 VERSUS -481
-Individual with fitness:  -110  added to next generation!
--104 VERSUS -104
-Individual with fitness:  -104  added to next generation!
--9790 VERSUS -9790
-Individual with fitness:  -108  added to next generation!
+-106 VERSUS -136
+Individual with fitness:  -106  added to next generation!
+-94 VERSUS -98
+Individual with fitness:  -94  added to next generation!
+-105 VERSUS -94
+Individual with fitness:  -94  added to next generation!
+-94 VERSUS -115
+Individual with fitness:  -94  added to next generation!
+-94 VERSUS -113
+Individual with fitness:  -94  added to next generation!
+-113 VERSUS -113
+Individual with fitness:  -113  added to next generation!
 
 *****Generation  6  playing the game*****
 6  individuals left...
@@ -164,21 +168,21 @@ Individual with fitness:  -108  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  7 *****
-[-112, -166, -158, -200, -118, -112, -154, -112, -175, -108, -142, -134]
+[-181, -157, -231, -271, -157, -161, -296, -119, -185, -234, -179, -139]
 
 *****Next generation selection*****
--158 VERSUS -112
-Individual with fitness:  -112  added to next generation!
--154 VERSUS -112
-Individual with fitness:  -112  added to next generation!
--112 VERSUS -108
-Individual with fitness:  -108  added to next generation!
--200 VERSUS -200
-Individual with fitness:  -175  added to next generation!
--134 VERSUS -142
-Individual with fitness:  -134  added to next generation!
--118 VERSUS -166
-Individual with fitness:  -118  added to next generation!
+-157 VERSUS -179
+Individual with fitness:  -157  added to next generation!
+-119 VERSUS -231
+Individual with fitness:  -119  added to next generation!
+-181 VERSUS -181
+Individual with fitness:  -181  added to next generation!
+-157 VERSUS -271
+Individual with fitness:  -157  added to next generation!
+-139 VERSUS -139
+Individual with fitness:  -139  added to next generation!
+-234 VERSUS -234
+Individual with fitness:  -234  added to next generation!
 
 *****Generation  7  playing the game*****
 6  individuals left...
@@ -188,21 +192,21 @@ Individual with fitness:  -118  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  8 *****
-[-225, -151, -154, -144, -126, -126, -167, -122, -160, -174, -9790, -155]
+[-218, -162, -188, -170, -192, -128, -3790, -288, -178, -125, -222, -164]
 
 *****Next generation selection*****
--144 VERSUS -174
-Individual with fitness:  -144  added to next generation!
--126 VERSUS -122
-Individual with fitness:  -122  added to next generation!
--151 VERSUS -126
-Individual with fitness:  -126  added to next generation!
--160 VERSUS -225
-Individual with fitness:  -160  added to next generation!
--167 VERSUS -9790
-Individual with fitness:  -167  added to next generation!
--154 VERSUS -154
-Individual with fitness:  -154  added to next generation!
+-188 VERSUS -162
+Individual with fitness:  -162  added to next generation!
+-178 VERSUS -288
+Individual with fitness:  -178  added to next generation!
+-218 VERSUS -222
+Individual with fitness:  -218  added to next generation!
+-170 VERSUS -128
+Individual with fitness:  -128  added to next generation!
+-125 VERSUS -3790
+Individual with fitness:  -125  added to next generation!
+-192 VERSUS -164
+Individual with fitness:  -164  added to next generation!
 
 *****Generation  8  playing the game*****
 6  individuals left...
@@ -212,21 +216,21 @@ Individual with fitness:  -154  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  9 *****
-[-152, -347, -398, -208, -161, -317, -147, -169, -111, -113, -179, -193]
+[-115, -105, -105, -131, -174, -96, -109, -105, -105, -199, -105, -105]
 
 *****Next generation selection*****
--179 VERSUS -113
-Individual with fitness:  -113  added to next generation!
--317 VERSUS -193
-Individual with fitness:  -193  added to next generation!
--152 VERSUS -398
-Individual with fitness:  -152  added to next generation!
--208 VERSUS -111
-Individual with fitness:  -111  added to next generation!
--347 VERSUS -147
-Individual with fitness:  -147  added to next generation!
--161 VERSUS -161
-Individual with fitness:  -161  added to next generation!
+-109 VERSUS -131
+Individual with fitness:  -109  added to next generation!
+-115 VERSUS -105
+Individual with fitness:  -105  added to next generation!
+-105 VERSUS -105
+Individual with fitness:  -105  added to next generation!
+-174 VERSUS -105
+Individual with fitness:  -105  added to next generation!
+-96 VERSUS -199
+Individual with fitness:  -96  added to next generation!
+-105 VERSUS -105
+Individual with fitness:  -105  added to next generation!
 
 *****Generation  9  playing the game*****
 6  individuals left...
@@ -236,21 +240,21 @@ Individual with fitness:  -161  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  10 *****
-[-110, -112, -9790, -119, -251, -139, -126, -119, -118, -110, -110, -121]
+[-317, -116, -102, -3860, -159, -133, -141, -144, -98, -98, -136, -102]
 
 *****Next generation selection*****
--251 VERSUS -126
-Individual with fitness:  -126  added to next generation!
--139 VERSUS -119
-Individual with fitness:  -119  added to next generation!
--110 VERSUS -119
-Individual with fitness:  -110  added to next generation!
--110 VERSUS -110
-Individual with fitness:  -110  added to next generation!
--121 VERSUS -121
-Individual with fitness:  -121  added to next generation!
--118 VERSUS -112
-Individual with fitness:  -112  added to next generation!
+-136 VERSUS -102
+Individual with fitness:  -102  added to next generation!
+-133 VERSUS -159
+Individual with fitness:  -133  added to next generation!
+-116 VERSUS -141
+Individual with fitness:  -116  added to next generation!
+-3860 VERSUS -102
+Individual with fitness:  -102  added to next generation!
+-317 VERSUS -98
+Individual with fitness:  -98  added to next generation!
+-144 VERSUS -98
+Individual with fitness:  -98  added to next generation!
 
 *****Generation  10  playing the game*****
 6  individuals left...
@@ -260,21 +264,21 @@ Individual with fitness:  -112  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  11 *****
-[-230, -110, -158, -142, -243, -171, -112, -158, -258, -203, -108, -112]
+[-129, -174, -124, -3841, -114, -1967, -1055, -156, -144, -128, -98, -163]
 
 *****Next generation selection*****
--171 VERSUS -171
-Individual with fitness:  -171  added to next generation!
--142 VERSUS -230
-Individual with fitness:  -142  added to next generation!
--112 VERSUS -112
-Individual with fitness:  -112  added to next generation!
--258 VERSUS -108
-Individual with fitness:  -108  added to next generation!
--110 VERSUS -243
-Individual with fitness:  -110  added to next generation!
--158 VERSUS -158
-Individual with fitness:  -158  added to next generation!
+-144 VERSUS -1967
+Individual with fitness:  -144  added to next generation!
+-98 VERSUS -3841
+Individual with fitness:  -98  added to next generation!
+-124 VERSUS -128
+Individual with fitness:  -124  added to next generation!
+-163 VERSUS -129
+Individual with fitness:  -129  added to next generation!
+-1055 VERSUS -114
+Individual with fitness:  -114  added to next generation!
+-174 VERSUS -156
+Individual with fitness:  -156  added to next generation!
 
 *****Generation  11  playing the game*****
 6  individuals left...
@@ -284,21 +288,21 @@ Individual with fitness:  -158  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  12 *****
-[-131, -178, -9790, -160, -145, -135, -160, -264, -155, -232, -159, -263]
+[-99, -110, -99, -128, -205, -132, -107, -106, -99, -203, -99, -98]
 
 *****Next generation selection*****
--178 VERSUS -263
-Individual with fitness:  -178  added to next generation!
--160 VERSUS -155
-Individual with fitness:  -155  added to next generation!
--135 VERSUS -232
-Individual with fitness:  -135  added to next generation!
--145 VERSUS -145
-Individual with fitness:  -145  added to next generation!
--264 VERSUS -160
-Individual with fitness:  -160  added to next generation!
--131 VERSUS -9790
-Individual with fitness:  -131  added to next generation!
+-99 VERSUS -107
+Individual with fitness:  -99  added to next generation!
+-99 VERSUS -99
+Individual with fitness:  -99  added to next generation!
+-99 VERSUS -99
+Individual with fitness:  -99  added to next generation!
+-110 VERSUS -106
+Individual with fitness:  -106  added to next generation!
+-203 VERSUS -99
+Individual with fitness:  -99  added to next generation!
+-98 VERSUS -98
+Individual with fitness:  -98  added to next generation!
 
 *****Generation  12  playing the game*****
 6  individuals left...
@@ -308,21 +312,21 @@ Individual with fitness:  -131  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  13 *****
-[-154, -105, -105, -9790, -151, -123, -181, -115, -122, -105, -122, -105]
+[-272, -158, -152, -158, -112, -102, -167, -114, -110, -146, -102, -78]
 
 *****Next generation selection*****
--105 VERSUS -123
-Individual with fitness:  -105  added to next generation!
--105 VERSUS -9790
-Individual with fitness:  -105  added to next generation!
--105 VERSUS -122
-Individual with fitness:  -105  added to next generation!
--151 VERSUS -154
-Individual with fitness:  -151  added to next generation!
--122 VERSUS -105
-Individual with fitness:  -105  added to next generation!
--115 VERSUS -181
-Individual with fitness:  -115  added to next generation!
+-102 VERSUS -152
+Individual with fitness:  -102  added to next generation!
+-110 VERSUS -114
+Individual with fitness:  -110  added to next generation!
+-158 VERSUS -146
+Individual with fitness:  -146  added to next generation!
+-272 VERSUS -78
+Individual with fitness:  -78  added to next generation!
+-158 VERSUS -112
+Individual with fitness:  -112  added to next generation!
+-167 VERSUS -167
+Individual with fitness:  -167  added to next generation!
 
 *****Generation  13  playing the game*****
 6  individuals left...
@@ -332,21 +336,21 @@ Individual with fitness:  -115  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  14 *****
-[-146, -312, -115, -115, -110, -206, -114, -115, -209, -112, -115, -132]
+[-95, -89, -83, -172, -156, -93, -95, -147, -93, -93, -3790, -97]
 
 *****Next generation selection*****
--146 VERSUS -115
-Individual with fitness:  -115  added to next generation!
--132 VERSUS -209
-Individual with fitness:  -132  added to next generation!
--114 VERSUS -115
-Individual with fitness:  -114  added to next generation!
--206 VERSUS -115
-Individual with fitness:  -115  added to next generation!
--312 VERSUS -110
-Individual with fitness:  -110  added to next generation!
--115 VERSUS -112
-Individual with fitness:  -112  added to next generation!
+-95 VERSUS -95
+Individual with fitness:  -95  added to next generation!
+-89 VERSUS -83
+Individual with fitness:  -83  added to next generation!
+-172 VERSUS -93
+Individual with fitness:  -93  added to next generation!
+-156 VERSUS -147
+Individual with fitness:  -147  added to next generation!
+-97 VERSUS -93
+Individual with fitness:  -93  added to next generation!
+-3790 VERSUS -3790
+Individual with fitness:  -3790  added to next generation!
 
 *****Generation  14  playing the game*****
 6  individuals left...
@@ -356,21 +360,21 @@ Individual with fitness:  -112  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  15 *****
-[-111, -121, -151, -118, -139, -196, -116, -109, -115, -163, -9790, -129]
+[-108, -108, -202, -110, -114, -109, -104, -112, -108, -108, -110, -47]
 
 *****Next generation selection*****
--151 VERSUS -116
-Individual with fitness:  -116  added to next generation!
--111 VERSUS -196
-Individual with fitness:  -111  added to next generation!
--115 VERSUS -118
-Individual with fitness:  -115  added to next generation!
--139 VERSUS -121
-Individual with fitness:  -121  added to next generation!
--109 VERSUS -9790
+-108 VERSUS -108
+Individual with fitness:  -108  added to next generation!
+-112 VERSUS -109
 Individual with fitness:  -109  added to next generation!
--163 VERSUS -163
-Individual with fitness:  -129  added to next generation!
+-114 VERSUS -108
+Individual with fitness:  -108  added to next generation!
+-110 VERSUS -110
+Individual with fitness:  -110  added to next generation!
+-104 VERSUS -104
+Individual with fitness:  -104  added to next generation!
+-202 VERSUS -202
+Individual with fitness:  -202  added to next generation!
 
 *****Generation  15  playing the game*****
 6  individuals left...
@@ -380,20 +384,20 @@ Individual with fitness:  -129  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  16 *****
-[-202, -139, -261, -182, -139, -190, -142, -138, -141, -126, -139, -156]
+[-138, -121, -183, -3790, -178, -106, -119, -3790, -123, -128, -177, -174]
 
 *****Next generation selection*****
--139 VERSUS -156
-Individual with fitness:  -139  added to next generation!
--141 VERSUS -202
-Individual with fitness:  -141  added to next generation!
--126 VERSUS -142
-Individual with fitness:  -126  added to next generation!
--190 VERSUS -139
-Individual with fitness:  -139  added to next generation!
--182 VERSUS -182
-Individual with fitness:  -139  added to next generation!
--261 VERSUS -261
+-3790 VERSUS -123
+Individual with fitness:  -123  added to next generation!
+-121 VERSUS -183
+Individual with fitness:  -121  added to next generation!
+-178 VERSUS -177
+Individual with fitness:  -177  added to next generation!
+-128 VERSUS -106
+Individual with fitness:  -106  added to next generation!
+-119 VERSUS -174
+Individual with fitness:  -119  added to next generation!
+-3790 VERSUS -138
 Individual with fitness:  -138  added to next generation!
 
 *****Generation  16  playing the game*****
@@ -404,21 +408,21 @@ Individual with fitness:  -138  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  17 *****
-[-120, -111, -111, -109, -111, -111, -153, -99, -99, -120, -109, -115]
+[-96, -260, -105, -3790, -196, -47, -102, -105, -107, -98, -133, -106]
 
 *****Next generation selection*****
--111 VERSUS -111
-Individual with fitness:  -111  added to next generation!
--111 VERSUS -153
-Individual with fitness:  -111  added to next generation!
--109 VERSUS -111
-Individual with fitness:  -109  added to next generation!
--109 VERSUS -99
-Individual with fitness:  -99  added to next generation!
--99 VERSUS -120
-Individual with fitness:  -99  added to next generation!
--120 VERSUS -115
-Individual with fitness:  -115  added to next generation!
+-105 VERSUS -196
+Individual with fitness:  -105  added to next generation!
+-96 VERSUS -133
+Individual with fitness:  -96  added to next generation!
+-107 VERSUS -102
+Individual with fitness:  -102  added to next generation!
+-3790 VERSUS -106
+Individual with fitness:  -106  added to next generation!
+-260 VERSUS -260
+Individual with fitness:  -260  added to next generation!
+-105 VERSUS -47
+Individual with fitness:  -47  added to next generation!
 
 *****Generation  17  playing the game*****
 6  individuals left...
@@ -428,21 +432,21 @@ Individual with fitness:  -115  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  18 *****
-[-134, -108, -134, -126, -135, -134, -108, -104, -134, -112, -104, -143]
+[-140, -142, -163, -170, -116, -116, -92, -195, -234, -195, -155, -225]
 
 *****Next generation selection*****
--108 VERSUS -134
-Individual with fitness:  -108  added to next generation!
--104 VERSUS -108
-Individual with fitness:  -104  added to next generation!
--134 VERSUS -134
-Individual with fitness:  -134  added to next generation!
--134 VERSUS -143
-Individual with fitness:  -134  added to next generation!
--135 VERSUS -126
-Individual with fitness:  -126  added to next generation!
--112 VERSUS -104
-Individual with fitness:  -104  added to next generation!
+-195 VERSUS -195
+Individual with fitness:  -195  added to next generation!
+-155 VERSUS -155
+Individual with fitness:  -155  added to next generation!
+-195 VERSUS -195
+Individual with fitness:  -195  added to next generation!
+-225 VERSUS -92
+Individual with fitness:  -92  added to next generation!
+-142 VERSUS -116
+Individual with fitness:  -116  added to next generation!
+-140 VERSUS -163
+Individual with fitness:  -140  added to next generation!
 
 *****Generation  18  playing the game*****
 6  individuals left...
@@ -452,21 +456,21 @@ Individual with fitness:  -104  added to next generation!
 *****New fitness calculated*****
 
 *****Fitness of indiviuals of generation  19 *****
-[-127, -170, -347, -158, -111, -125, -174, -135, -119, -145, -164, -119]
+[-144, -204, -199, -282, -134, -218, -195, -98, -182, -98, -98, -196]
 
 *****Next generation selection*****
--158 VERSUS -127
-Individual with fitness:  -127  added to next generation!
--119 VERSUS -174
-Individual with fitness:  -119  added to next generation!
--125 VERSUS -170
-Individual with fitness:  -125  added to next generation!
--135 VERSUS -164
-Individual with fitness:  -135  added to next generation!
--347 VERSUS -119
-Individual with fitness:  -119  added to next generation!
--145 VERSUS -111
-Individual with fitness:  -111  added to next generation!
+-98 VERSUS -282
+Individual with fitness:  -98  added to next generation!
+-144 VERSUS -98
+Individual with fitness:  -98  added to next generation!
+-182 VERSUS -204
+Individual with fitness:  -182  added to next generation!
+-196 VERSUS -196
+Individual with fitness:  -196  added to next generation!
+-98 VERSUS -195
+Individual with fitness:  -98  added to next generation!
+-218 VERSUS -218
+Individual with fitness:  -218  added to next generation!
 
 *****Generation  19  playing the game*****
 6  individuals left...
@@ -475,6 +479,8 @@ Individual with fitness:  -111  added to next generation!
 
 *****New fitness calculated*****
 
-[-133, -117, -106, -176, -106, -163, -139, -106, -122, -106, -106, -112]
+[-80, -96, -102, -92, -92, -96, -96, -142, -110, -146, -96, -112]
 *****Best end fitness*****
- -106
+ -80
+
+Process finished with exit code 0
